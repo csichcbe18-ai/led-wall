@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Church LED Display - Celebration Showcase</title>
+    <style>
+        /* Base configuration derived from your working LED wall template */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background-color: black; 
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
+        }
+        #bg { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-size: cover; 
+            background-position: center; 
+            transition: background-image 0.8s ease-in-out; 
+        }
+        .overlay { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%); 
+            z-index: 5; 
+        }
+        .container { 
+            position: relative; 
+            z-index: 10; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100%; 
+            padding: 20px; 
+            text-align: center; 
+            box-sizing: border-box;
+        }
+
+        /* Fixed Premium Glassmorphic Container */
+        .ui-card {
+            background: rgba(255, 255, 255, 0.08);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 35px 40px;
+            border-radius: 24px;
+            max-width: 90%;
+            width: 580px;
+            box-sizing: border-box;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        
+        /* Modern Premium Dynamic Heading Badge */
+        #heading-line {
+            display: inline-block;
+            font-size: 40px;
+            color: #ffd700; 
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 28px;
+            background: rgba(255, 215, 0, 0.15);
+            padding: 6px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 215, 0, 0.35);
+        }
+
+        /* High-Performance Readable Typography Layers */
+        #names-line { 
+            font-size: 36px; 
+            font-weight: 900; 
+            color: #ffffff;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.7);
+            line-height: 1.4; 
+            margin-bottom: 16px; 
+        }
+        #milestone-line { 
+            font-size: 22px; 
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 600; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 18px;
+        }
+        #date-line {
+            font-size: 25px;
+            color: #ff66fa; 
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        #date-line .day-number {
+            font-size: 42px;
+            font-weight: 900;
+            display: inline-block;
+            margin-right: 4px;
+            color: #ffffff;
+        }
+        
+        .watermark { 
+            position: absolute; 
+            bottom: 20px; 
+            left: 30px; 
+            font-size: 14px; 
+            font-weight: 800; 
+            color: rgba(255, 255, 255, 0.35); 
+            z-index: 20; 
+            letter-spacing: 3px; 
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div id="bg"></div>
+    <div class="overlay"></div>
+    
+    <div class="container">
+        <div class="ui-card">
+            <div id="heading-line"></div>
+            <div id="names-line">Loading...</div>
+            <div id="milestone-line"></div>
+            <div id="date-line"></div>
+        </div>
+    </div>
+    
+    <div class="watermark">MEDIATEAM</div>
+
+    <script>
+        const slideDuration = 2000; // 2 seconds per slide
+
+        // Background image definitions
+        const bgImages = {
+            wedding: "url('wedding.jpeg')",
+            birthday: "url('birthday.jpeg')"
+        };
+
+        // DATA REGISTRY ZONE (Fixed Typos like 21th -> 21st, 22th -> 22nd, 24rd -> 24th)
+        const rawData = [
+            // === WEDDINGS ===
+            { husband: "CLEMENT DAVID S", wife: "BLESSY CLEMENT", year: "2018", date: "19th July" },
+            { husband: "PRINCE P", wife: "KAVITHA P", year: "2009", date: "20th July" },
+            { husband: "SAMUEL KIRUBAKARAN P", wife: "PREMA RAJAKUMARI S", year: "2021", date: "21st July" },
+
+            // === BIRTHDAYS ===
+            { name: "Mrs GREETA MANOHAR RAJ", date: "19th July" }, 
+            { name: "Mrs JULIET PACKIARAJ", date: "19th July" },
+            { name: "Mr SEKAR S G", date: "19th July" },
+            { name: "Mrs SHANTHI KOILPITCHAI", date: "19th July" },
+            { name: "Mr VASUDEVAN J", date: "19th July" },
+            { name: "Mr DINAKARAN D", date: "19th July" },
+            { name: "Mr ASIRVATHAM P", date: "19th July" },
+            { name: "Mr THOMAS RAJASINGH", date: "19th July" },
+            { name: "Ms ROSELINMARY", date: "19th July" },
+            { name: "Mr GOLDWIN", date: "19th July" },
+            { name: "Mrs SELVA ANISHA Y", date: "19th July" },
+            { name: "Mr IMMANUEL G S/O GIDEON I", date: "19th July" },
+            { name: "Mr DERICK JEBAS D", date: "20th July" },
+            { name: "Mrs JEYAM AMMAL S", date: "20th July" },
+            { name: "Mrs JEBARANI JEBARAJAN", date: "20th July" },
+            { name: "Mrs JAYA RETNA KUMAR", date: "20th July" },
+            { name: "Mr JOHNSON S", date: "20th July" },
+            { name: "Mr JEEVANANTHAM J", date: "20th July" },
+            { name: "Mrs GNANASELVI A", date: "20th July" },
+            { name: "Mr PONDURAI PALPANDI", date: "20th July" },
+            { name: "Mrs PONMANI J", date: "20th July" },
+            { name: "Mrs GNANAMALAR R", date: "20th July" },
+            { name: "Mrs HEPSY JOTHI SELVAM", date: "20th July" },
+            { name: "Mr JERAMRAJ SAMUEL I", date: "20th July" },
+            { name: "Mrs SHEEBA JANSY M", date: "20th July" },
+            { name: "Mr ALEX STUWART M", date: "20th July" },
+            { name: "Mr JOHN SAMUEL MOSES T", date: "20th July" },
+            { name: "Mr SAM JOSHUA M", date: "20th July" },
+            { name: "Mrs SAROJINI THANGARAJ", date: "21st July" },
+            { name: "Mr GNANARAJ K", date: "21st July" },
+            { name: "Mrs SELVI D", date: "21st July" },
+            { name: "Mr SAMPATH K", date: "21st July" },
+            { name: "Mrs JULIET SHEEBA", date: "21st July" },
+            { name: "Mrs DANFI JEBA DEVAPRIYA S", date: "21st July" },
+            { name: "Mr VIMALSON CHRISTOPHER J", date: "21st July" },
+            { name: "Mrs AGUSTA LARANCY T", date: "21st July" },
+            { name: "Mr RIJO SARVIN", date: "21st July" },
+            { name: "Mrs SWETHA S", date: "21st July" },
+            { name: "Mr EBI DELIGHT PAUL I", date: "21st July" },
+            { name: "Mrs JESINTHS NARY A", date: "22nd July" },
+            { name: "Mr DEVARAJ S", date: "22nd July" },
+            { name: "Mr JAYAKUMAR T", date: "22nd July" },
+            { name: "Mrs LATHA RANI K", date: "22nd July" },
+            { name: "Mrs SELVI N", date: "22nd July" },
+            { name: "Mr KAMARAJ S", date: "22nd July" },
+            { name: "Mr RUBAN R", date: "22nd July" },
+            { name: "Mrs JEBASANTHI R", date: "22nd July" },
+            { name: "Mrs PRINCY PAULCIA", date: "22nd July" },
+            { name: "Mrs JEBA SANGEETHA A", date: "22nd July" },
+            { name: "Mr DEVA KIRUBA KARAN S", date: "22nd July" },
+            { name: "Mr JOHN JOSHUA P", date: "22nd July" },
+            { name: "Mr THOMAS D", date: "22nd July" },
+            { name: "Mr SAMUEL ALEXANDER V", date: "22nd July" },
+            { name: "Mrs ANBARASU THANGAIAH", date: "23rd July" },
+            { name: "Mr KIRUBAI RAJ", date: "23rd July" },
+            { name: "Mrs SELVARANI T ", date: "23rd July" },
+            { name: "Mr NIRMAL ARULRAJ J P", date: "23rd July" },
+            { name: "Mr JEBAMALAR DEIVA KIRUBA J", date: "23rd July" },
+            { name: "Mr ALLWYN G", date: "23rd July" },
+            { name: "Mrs CLARIBEL SHIRLY SELVIN", date: "23rd July" },
+            { name: "Mr REGGAN ALBERT", date: "23rd July" },
+            { name: "Mr NIKOLAS RAJA I", date: "24th July" },
+            { name: "Mrs SELVARANI K", date: "24th July" },
+            { name: "Mrs BEULAH S", date: "24th July" },
+            { name: "Mrs REVATHI PRINCE", date: "24th July" },
+            { name: "Mrs JOAANA HELEN", date: "24th July" },
+            { name: "Mr RAJESH KUMAR J", date: "24th July" },
+            { name: "Ms PAVITHRA P", date: "24th July" },
+            { name: "Mr JEGAN ALEX A S", date: "24th July" },
+            { name: "Mr SELGIN GERSON M", date: "24th July" },
+            { name: "Mrs SHANTHI R", date: "25th July" },
+            { name: "Mrs JOSEPHINE THAYAMAL", date: "25th July" },
+            { name: "Mrs PREMALA T", date: "25th July" },
+            { name: "Mr KOILPITCHAI ARPUTHARAJ", date: "25th July" },
+            { name: "Mr SELTON T", date: "25th July" },
+            { name: "Mr JOHNY DANIAL RAJ B", date: "25th July" },
+            { name: "Mr JOHNSON JAYAKUMAR", date: "25th July" },
+            { name: "Mr CHRISTOPER M", date: "25th July" },
+            { name: "Mr SAMUEL ALEXANDER V", date: "25th July" },
+            { name: "Mr DANIEL P", date: "25th July" },
+            { name: "Mrs SHANTHA MANI S", date: "25th July" },
+            { name: "Mr WILSON JEBAKUMAR S", date: "25th July" },
+            { name: "Mrs SWEETY JENITTA A", date: "25th July" }
+        ];
+
+        let currentIndex = 0;
+
+        function formatDateBig(dateStr, label) {
+            if (!dateStr) return "";
+            const match = dateStr.match(/^(\d+)(.*)$/);
+            if (match) {
+                return `${label}: <span class="day-number">${match[1]}</span>${match[2]}`;
+            }
+            return `${label}: ${dateStr}`;
+        }
+
+        function refreshContent() {
+            try {
+                if (!rawData || rawData.length === 0) return;
+                
+                const item = rawData[currentIndex];
+                const currentYear = new Date().getFullYear();
+                
+                let headingText = "";
+                let names = "";
+                let milestoneText = "";
+                let dateHTML = "";
+
+                if (item.husband && item.wife) {
+                    let hName = item.husband.replace(/^(Mr|Mrs|Ms)\.?\s+/i, '');
+                    let wName = item.wife.replace(/^(Mr|Mrs|Ms)\.?\s+/i, '');
+                    
+                    let parsedYear = parseInt(item.year);
+                    if (isNaN(parsedYear)) parsedYear = currentYear;
+                    const milestone = currentYear - parsedYear;
+
+                    headingText = "Wedding Wish";
+                    names = `Mr. ${hName}<br>& Mrs. ${wName}`;
+                    milestoneText = `Celebrating ${milestone} Years of Marriage`;
+                    dateHTML = formatDateBig(item.date, "Wedding Day");
+                    document.getElementById('bg').style.backgroundImage = bgImages.wedding;
+                } 
+                else if (item.name) {
+                    headingText = "Birthday Wish";
+                    names = item.name;
+                    milestoneText = "Celebrating Joyful Birthday";
+                    dateHTML = formatDateBig(item.date, "Birthday");
+                    document.getElementById('bg').style.backgroundImage = bgImages.birthday;
+                }
+
+                document.getElementById('heading-line').innerText = headingText;
+                document.getElementById('names-line').innerHTML = names;
+                document.getElementById('milestone-line').innerText = milestoneText;
+                document.getElementById('date-line').innerHTML = dateHTML;
+
+            } catch (error) {
+                console.error("Error at index: " + currentIndex, error);
+            } finally {
+                currentIndex = (currentIndex + 1) % rawData.length;
+            }
+        }
+
+        refreshContent();
+        setInterval(refreshContent, slideDuration);
+    </script>
+</body>
+</html>
