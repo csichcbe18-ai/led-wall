@@ -1,427 +1,427 @@
-<!-- <!DOCTYPE html> -->
-<!-- <html lang="ta"> -->
-<!-- <head> -->
-    <!-- <meta charset="UTF-8"> -->
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <!-- <title>Church LED Display - Celebration Showcase</title> -->
-    <!-- <style> -->
-        <!-- body, html {  -->
-            <!-- margin: 0;  -->
-            <!-- padding: 0;  -->
-            <!-- width: 100%;  -->
-            <!-- height: 100%;  -->
-            <!-- overflow: hidden;  -->
-            <!-- background-color: black;  -->
-            <!-- font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;  -->
-        <!-- } -->
-        <!-- #bg {  -->
-            <!-- position: fixed;  -->
-            <!-- top: 0;  -->
-            <!-- left: 0;  -->
-            <!-- width: 100%;  -->
-            <!-- height: 100%;  -->
-            <!-- background-size: cover;  -->
-            <!-- background-position: center;  -->
-            <!-- transition: background-image 0.8s ease-in-out;  -->
-        <!-- } -->
-        <!-- .overlay {  -->
-            <!-- position: absolute;  -->
-            <!-- top: 0;  -->
-            <!-- left: 0;  -->
-            <!-- width: 100%;  -->
-            <!-- height: 100%;  -->
-            <!-- background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%);  -->
-            <!-- z-index: 5;  -->
-        <!-- } -->
-        <!-- .container {  -->
-            <!-- position: relative;  -->
-            <!-- z-index: 10;  -->
-            <!-- display: flex;  -->
-            <!-- flex-direction: column;  -->
-            <!-- align-items: center;  -->
-            <!-- justify-content: center;  -->
-            <!-- height: 100%;  -->
-            <!-- padding: 20px;  -->
-            <!-- text-align: center;  -->
-            <!-- box-sizing: border-box; -->
-        <!-- } -->
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Church LED Display - Celebration Showcase</title>
+    <style>
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background-color: black; 
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
+        }
+        #bg { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-size: cover; 
+            background-position: center; 
+            transition: background-image 0.8s ease-in-out; 
+        }
+        .overlay { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%); 
+            z-index: 5; 
+        }
+        .container { 
+            position: relative; 
+            z-index: 10; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100%; 
+            padding: 20px; 
+            text-align: center; 
+            box-sizing: border-box;
+        }
 
-        <!-- .ui-card { -->
-            <!-- background: rgba(255, 255, 255, 0.08); -->
-            <!-- -webkit-backdrop-filter: blur(14px); -->
-            <!-- backdrop-filter: blur(14px); -->
-            <!-- border: 1px solid rgba(255, 255, 255, 0.15); -->
-            <!-- padding: 35px 40px; -->
-            <!-- border-radius: 24px; -->
-            <!-- max-width: 90%; -->
-            <!-- width: 580px; -->
-            <!-- box-sizing: border-box; -->
-            <!-- box-shadow: 0 20px 40px rgba(0,0,0,0.5); -->
-        <!-- } -->
+        .ui-card {
+            background: rgba(255, 255, 255, 0.08);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 35px 40px;
+            border-radius: 24px;
+            max-width: 90%;
+            width: 580px;
+            box-sizing: border-box;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
         
-        <!-- #heading-line { -->
-            <!-- display: inline-block; -->
-            <!-- font-size: 40px; -->
-            <!-- color: #ffd700;  -->
-            <!-- font-weight: 800; -->
-            <!-- text-transform: uppercase; -->
-            <!-- letter-spacing: 3px; -->
-            <!-- margin-bottom: 28px; -->
-            <!-- background: rgba(255, 215, 0, 0.15); -->
-            <!-- padding: 6px 20px; -->
-            <!-- border-radius: 50px; -->
-            <!-- border: 1px solid rgba(255, 215, 0, 0.35); -->
-        <!-- } -->
+        #heading-line {
+            display: inline-block;
+            font-size: 40px;
+            color: #ffd700; 
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 28px;
+            background: rgba(255, 215, 0, 0.15);
+            padding: 6px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 215, 0, 0.35);
+        }
 
-        <!-- #names-line {  -->
-            <!-- font-size: 36px;  -->
-            <!-- font-weight: 900;  -->
-            <!-- color: #ffffff; -->
-            <!-- text-shadow: 0 4px 12px rgba(0,0,0,0.7); -->
-            <!-- line-height: 1.4;  -->
-            <!-- margin-bottom: 16px;  -->
-        <!-- } -->
-        <!-- #milestone-line {  -->
-            <!-- font-size: 22px;  -->
-            <!-- color: rgba(255, 255, 255, 0.95); -->
-            <!-- font-weight: 600;  -->
-            <!-- text-shadow: 0 2px 4px rgba(0,0,0,0.5); -->
-            <!-- margin-bottom: 18px; -->
-        <!-- } -->
-        <!-- #date-line { -->
-            <!-- font-size: 25px; -->
-            <!-- color: #ff66fa;  -->
-            <!-- font-weight: 800; -->
-            <!-- text-transform: uppercase; -->
-            <!-- letter-spacing: 2px; -->
-        <!-- } -->
-        <!-- #date-line .day-number { -->
-            <!-- font-size: 42px; -->
-            <!-- font-weight: 900; -->
-            <!-- display: inline-block; -->
-            <!-- margin-right: 4px; -->
-            <!-- color: #ffffff; -->
-        <!-- } -->
+        #names-line { 
+            font-size: 36px; 
+            font-weight: 900; 
+            color: #ffffff;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.7);
+            line-height: 1.4; 
+            margin-bottom: 16px; 
+        }
+        #milestone-line { 
+            font-size: 22px; 
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 600; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 18px;
+        }
+        #date-line {
+            font-size: 25px;
+            color: #ff66fa; 
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        #date-line .day-number {
+            font-size: 42px;
+            font-weight: 900;
+            display: inline-block;
+            margin-right: 4px;
+            color: #ffffff;
+        }
         
-        <!-- .watermark {  -->
-            <!-- position: absolute;  -->
-            <!-- bottom: 20px;  -->
-            <!-- left: 30px;  -->
-            <!-- font-size: 14px;  -->
-            <!-- font-weight: 800;  -->
-            <!-- color: rgba(255, 255, 255, 0.35);  -->
-            <!-- z-index: 20;  -->
-            <!-- letter-spacing: 3px;  -->
-            <!-- text-transform: uppercase; -->
-        <!-- } -->
-    <!-- </style> -->
-<!-- </head> -->
-<!-- <body> -->
-    <!-- <div id="bg"></div> -->
-    <!-- <div class="overlay"></div> -->
+        .watermark { 
+            position: absolute; 
+            bottom: 20px; 
+            left: 30px; 
+            font-size: 14px; 
+            font-weight: 800; 
+            color: rgba(255, 255, 255, 0.35); 
+            z-index: 20; 
+            letter-spacing: 3px; 
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div id="bg"></div>
+    <div class="overlay"></div>
     
-    <!-- <div class="container"> -->
-        <!-- <div class="ui-card"> -->
-            <!-- <div id="heading-line"></div> -->
-            <!-- <div id="names-line">Loading...</div> -->
-            <!-- <div id="milestone-line"></div> -->
-            <!-- <div id="date-line"></div> -->
-        <!-- </div> -->
-    <!-- </div> -->
+    <div class="container">
+        <div class="ui-card">
+            <div id="heading-line"></div>
+            <div id="names-line">Loading...</div>
+            <div id="milestone-line"></div>
+            <div id="date-line"></div>
+        </div>
+    </div>
     
-    <!-- <div class="watermark">MEDIATEAM</div> -->
+    <div class="watermark">MEDIATEAM</div>
 
-    <!-- <script> -->
-        <!-- const slideDuration = 2000; // 2 seconds per slide -->
+    <script>
+        const slideDuration = 2000; // 2 seconds per slide
 
-        <!-- const bgImages = { -->
-            <!-- wedding: "url('wedding.jpeg')", -->
-            <!-- birthday: "url('birthday.jpeg')" -->
-        <!-- }; -->
+        const bgImages = {
+            wedding: "url('wedding.jpeg')",
+            birthday: "url('birthday.jpeg')"
+        };
 
-        <!-- const rawData = [ -->
-            <!-- // ==================== WEDDINGS (Aug 16 - Aug 22) ==================== -->
-            <!-- // August 16 -->
-            <!-- { husband: "Mr ALLEN STEVE W J", wife: "Mrs ANGEL JOICE R", year: "2013", date: "16th August" }, -->
+        const rawData = [
+            // ==================== WEDDINGS (Aug 16 - Aug 22) ====================
+            // August 16
+            { husband: "Mr ALLEN STEVE W J", wife: "Mrs ANGEL JOICE R", year: "2013", date: "16th August" },
             
-            <!-- // August 17 -->
-            <!-- { husband: "Mr BASKARAN C", wife: "Mrs USHA RANI", year: "1990", date: "17th August" }, -->
-            <!-- { husband: "Mr SAMUEL PETER K", wife: "Mrs HEPZIBA JEEVAMANI", year: "1998", date: "17th August" }, -->
-            <!-- { husband: "Mr SOLOMON VINOTH KUMAR G", wife: "Mrs PREETHA PONSELVAM S", year: "2016", date: "17th August" }, -->
+            // August 17
+            { husband: "Mr BASKARAN C", wife: "Mrs USHA RANI", year: "1990", date: "17th August" },
+            { husband: "Mr SAMUEL PETER K", wife: "Mrs HEPZIBA JEEVAMANI", year: "1998", date: "17th August" },
+            { husband: "Mr SOLOMON VINOTH KUMAR G", wife: "Mrs PREETHA PONSELVAM S", year: "2016", date: "17th August" },
             
-            <!-- // August 18 -->
-            <!-- { husband: "Mr RAJAKUMAR NAVARAJ C", wife: "Mrs JEYASEELI R", year: "1999", date: "18th August" }, -->
-            <!-- { husband: "Mr SOLOMON JEBAKUMAR S", wife: "Mrs JAYAPRABHA A", year: "2016", date: "18th August" }, -->
-            <!-- { husband: "Mr CEPHAS ARUN L", wife: "Mrs JENIPHA PRISCILLA A", year: "2021", date: "18th August" }, -->
-            <!-- { husband: "Mr LIVINGSTON SAMUEL J", wife: "Mrs LATHA EBENEZER", year: "2021", date: "18th August" }, -->
+            // August 18
+            { husband: "Mr RAJAKUMAR NAVARAJ C", wife: "Mrs JEYASEELI R", year: "1999", date: "18th August" },
+            { husband: "Mr SOLOMON JEBAKUMAR S", wife: "Mrs JAYAPRABHA A", year: "2016", date: "18th August" },
+            { husband: "Mr CEPHAS ARUN L", wife: "Mrs JENIPHA PRISCILLA A", year: "2021", date: "18th August" },
+            { husband: "Mr LIVINGSTON SAMUEL J", wife: "Mrs LATHA EBENEZER", year: "2021", date: "18th August" },
             
-            <!-- // August 19 -->
-            <!-- { husband: "Mr PONVEL PETER", wife: "Mrs JEYARANI P", year: "1988", date: "19th August" }, -->
-            <!-- { husband: "Mr DEVARAJ K", wife: "Mrs HEPZI", year: "1994", date: "19th August" }, -->
-            <!-- { husband: "Mr BACKIARAJ P", wife: "Mrs KANMANI B", year: "1996", date: "19th August" }, -->
-            <!-- { husband: "Mr CHRISTOPHER", wife: "Mrs RENI C", year: "1996", date: "19th August" }, -->
-            <!-- { husband: "Mr EDISON ARTHUR E", wife: "Mrs STELLA MABEL JANCY P", year: "1996", date: "19th August" }, -->
-            <!-- { husband: "Mr JOHNSON C", wife: "Mrs JEYAKUMARI T", year: "1996", date: "19th August" }, -->
-            <!-- { husband: "Mr THOMAS K", wife: "Mrs EZHIL A", year: "1998", date: "19th August" }, -->
-            <!-- { husband: "Mr JEBAKUMAR K", wife: "Mrs KIRUBAIRANI J", year: "2004", date: "19th August" }, -->
-            <!-- { husband: "Mr AUGUSTIN SAMUEL D", wife: "Mrs SHEELA SELVAKUMARI K", year: "2010", date: "19th August" }, -->
-            <!-- { husband: "Mr PREM JEBAKUMAR A", wife: "Mrs BENISHA CATHERINE R", year: "2024", date: "19th August" }, -->
+            // August 19
+            { husband: "Mr PONVEL PETER", wife: "Mrs JEYARANI P", year: "1988", date: "19th August" },
+            { husband: "Mr DEVARAJ K", wife: "Mrs HEPZI", year: "1994", date: "19th August" },
+            { husband: "Mr BACKIARAJ P", wife: "Mrs KANMANI B", year: "1996", date: "19th August" },
+            { husband: "Mr CHRISTOPHER", wife: "Mrs RENI C", year: "1996", date: "19th August" },
+            { husband: "Mr EDISON ARTHUR E", wife: "Mrs STELLA MABEL JANCY P", year: "1996", date: "19th August" },
+            { husband: "Mr JOHNSON C", wife: "Mrs JEYAKUMARI T", year: "1996", date: "19th August" },
+            { husband: "Mr THOMAS K", wife: "Mrs EZHIL A", year: "1998", date: "19th August" },
+            { husband: "Mr JEBAKUMAR K", wife: "Mrs KIRUBAIRANI J", year: "2004", date: "19th August" },
+            { husband: "Mr AUGUSTIN SAMUEL D", wife: "Mrs SHEELA SELVAKUMARI K", year: "2010", date: "19th August" },
+            { husband: "Mr PREM JEBAKUMAR A", wife: "Mrs BENISHA CATHERINE R", year: "2024", date: "19th August" },
             
-            <!-- // August 20 -->
-            <!-- { husband: "Mr MANUEL PACKIARAJ I", wife: "Mrs HEPZIBAH M PACKIARAJ", year: "1964", date: "20th August" }, -->
-            <!-- { husband: "Mr CHARLES S", wife: "Mrs SIMIYA CHARLES", year: "1993", date: "20th August" }, -->
-            <!-- { husband: "Mr JAYA KUMAR V", wife: "Mrs SMITH NARGEES W", year: "2001", date: "20th August" }, -->
-            <!-- { husband: "Mr JUSTIN DEVARAJAN H", wife: "Mrs ANITHA RATHI J", year: "2001", date: "20th August" }, -->
-            <!-- { husband: "Mr SUNIL J G M", wife: "Mrs JULIANA", year: "2004", date: "20th August" }, -->
-            <!-- { husband: "Mr ENOCH RAJ SINGH T", wife: "Mrs KAVITHA JEBASEEI ENOCH K", year: "2008", date: "20th August" }, -->
-            <!-- { husband: "Mr VENKATESH N", wife: "Mrs BEULAH", year: "2010", date: "20th August" }, -->
-            <!-- { husband: "Mr MARTIN VICTOR K", wife: "Mrs DIVYA DORATHY S", year: "2015", date: "20th August" }, -->
+            // August 20
+            { husband: "Mr MANUEL PACKIARAJ I", wife: "Mrs HEPZIBAH M PACKIARAJ", year: "1964", date: "20th August" },
+            { husband: "Mr CHARLES S", wife: "Mrs SIMIYA CHARLES", year: "1993", date: "20th August" },
+            { husband: "Mr JAYA KUMAR V", wife: "Mrs SMITH NARGEES W", year: "2001", date: "20th August" },
+            { husband: "Mr JUSTIN DEVARAJAN H", wife: "Mrs ANITHA RATHI J", year: "2001", date: "20th August" },
+            { husband: "Mr SUNIL J G M", wife: "Mrs JULIANA", year: "2004", date: "20th August" },
+            { husband: "Mr ENOCH RAJ SINGH T", wife: "Mrs KAVITHA JEBASEEI ENOCH K", year: "2008", date: "20th August" },
+            { husband: "Mr VENKATESH N", wife: "Mrs BEULAH", year: "2010", date: "20th August" },
+            { husband: "Mr MARTIN VICTOR K", wife: "Mrs DIVYA DORATHY S", year: "2015", date: "20th August" },
             
-            <!-- // August 21 -->
-            <!-- { husband: "Mr SANTHOSAM C", wife: "Mrs BANUMATHI SANTHOSAM", year: "1978", date: "21st August" }, -->
-            <!-- { husband: "Mr HENRY J S", wife: "Mrs IDA VASNTHAKUMARY H", year: "1982", date: "21st August" }, -->
-            <!-- { husband: "Mr THANGAPANDI", wife: "Mrs LATHA T", year: "1991", date: "21st August" }, -->
-            <!-- { husband: "Mr NICKSON MOSES S", wife: "Mrs JEMILA N", year: "1997", date: "21st August" }, -->
-            <!-- { husband: "Mr RAJENDRAN R", wife: "Mrs MOBI RAJENDRAN", year: "1997", date: "21st August" }, -->
-            <!-- { husband: "Mr RAJA SINGH J K", wife: "Mrs PRABHA P", year: "2006", date: "21st August" }, -->
-            <!-- { husband: "Mr RUBAN S", wife: "Mrs KINGSLI", year: "2006", date: "21st August" }, -->
-            <!-- { husband: "Mr SAMUEL PRADEEP D", wife: "Mrs ANNIE SOPHIA DULICE P", year: "2015", date: "21st August" }, -->
-            <!-- { husband: "Mr FERDINAND ABISHEK RAVI", wife: "Mrs CHRISTINA GANAPATHI", year: "2023", date: "21st August" }, -->
+            // August 21
+            { husband: "Mr SANTHOSAM C", wife: "Mrs BANUMATHI SANTHOSAM", year: "1978", date: "21st August" },
+            { husband: "Mr HENRY J S", wife: "Mrs IDA VASNTHAKUMARY H", year: "1982", date: "21st August" },
+            { husband: "Mr THANGAPANDI", wife: "Mrs LATHA T", year: "1991", date: "21st August" },
+            { husband: "Mr NICKSON MOSES S", wife: "Mrs JEMILA N", year: "1997", date: "21st August" },
+            { husband: "Mr RAJENDRAN R", wife: "Mrs MOBI RAJENDRAN", year: "1997", date: "21st August" },
+            { husband: "Mr RAJA SINGH J K", wife: "Mrs PRABHA P", year: "2006", date: "21st August" },
+            { husband: "Mr RUBAN S", wife: "Mrs KINGSLI", year: "2006", date: "21st August" },
+            { husband: "Mr SAMUEL PRADEEP D", wife: "Mrs ANNIE SOPHIA DULICE P", year: "2015", date: "21st August" },
+            { husband: "Mr FERDINAND ABISHEK RAVI", wife: "Mrs CHRISTINA GANAPATHI", year: "2023", date: "21st August" },
             
-            <!-- // August 22 -->
-            <!-- { husband: "Mr JOSEPH A", wife: "Mrs JAYASEELI J", year: "1982", date: "22nd August" }, -->
-            <!-- { husband: "Mr HUDSON JEBAKUMAR J", wife: "Mrs JEEVA HUDSON", year: "1991", date: "22nd August" }, -->
-            <!-- { husband: "Mr GILTON J", wife: "Mrs BENITRA G", year: "2001", date: "22nd August" }, -->
-            <!-- { husband: "Mr NIRMAL ARULRAJ J P", wife: "Mrs SHEEBA RANI N A", year: "2005", date: "22nd August" }, -->
-            <!-- { husband: "Mr SAM ASIR G", wife: "Mrs WISELIN THAYA N", year: "2005", date: "22nd August" }, -->
-            <!-- { husband: "Mr JEBADOSS S", wife: "Mrs HELEN PRABHA J", year: "2007", date: "22nd August" }, -->
-            <!-- { husband: "Mr JHONEY RESSEL ROSE N", wife: "Mrs BEENA", year: "2007", date: "22nd August" }, -->
-            <!-- { husband: "Mr BASKER SELVAKUMAR J", wife: "Mrs JASMINE RAJAKUMARI", year: "2016", date: "22nd August" }, -->
-            <!-- { husband: "Mr FELIX G", wife: "Mrs VASHNI SELVA JEMIMA C", year: "2016", date: "22nd August" }, -->
-            <!-- { husband: "Mr IVAN IMMANUEL", wife: "Mrs NANCY ISWARYA T", year: "2016", date: "22nd August" }, -->
-            <!-- { husband: "Mr RENI KUMAR G", wife: "Mrs CYNTHIA RENIKUMAR", year: "2016", date: "22nd August" }, -->
-            <!-- { husband: "Mr JOHN THOMAS R", wife: "Mrs JEBASHEELA B", year: "2022", date: "22nd August" }, -->
+            // August 22
+            { husband: "Mr JOSEPH A", wife: "Mrs JAYASEELI J", year: "1982", date: "22nd August" },
+            { husband: "Mr HUDSON JEBAKUMAR J", wife: "Mrs JEEVA HUDSON", year: "1991", date: "22nd August" },
+            { husband: "Mr GILTON J", wife: "Mrs BENITRA G", year: "2001", date: "22nd August" },
+            { husband: "Mr NIRMAL ARULRAJ J P", wife: "Mrs SHEEBA RANI N A", year: "2005", date: "22nd August" },
+            { husband: "Mr SAM ASIR G", wife: "Mrs WISELIN THAYA N", year: "2005", date: "22nd August" },
+            { husband: "Mr JEBADOSS S", wife: "Mrs HELEN PRABHA J", year: "2007", date: "22nd August" },
+            { husband: "Mr JHONEY RESSEL ROSE N", wife: "Mrs BEENA", year: "2007", date: "22nd August" },
+            { husband: "Mr BASKER SELVAKUMAR J", wife: "Mrs JASMINE RAJAKUMARI", year: "2016", date: "22nd August" },
+            { husband: "Mr FELIX G", wife: "Mrs VASHNI SELVA JEMIMA C", year: "2016", date: "22nd August" },
+            { husband: "Mr IVAN IMMANUEL", wife: "Mrs NANCY ISWARYA T", year: "2016", date: "22nd August" },
+            { husband: "Mr RENI KUMAR G", wife: "Mrs CYNTHIA RENIKUMAR", year: "2016", date: "22nd August" },
+            { husband: "Mr JOHN THOMAS R", wife: "Mrs JEBASHEELA B", year: "2022", date: "22nd August" },
 
-            <!-- // ==================== BIRTHDAYS (Aug 16 - Aug 22) ==================== -->
-            <!-- // August 16 -->
-            <!-- { name: "Mr JOHN KARUNAKARAN D", date: "16th August" }, -->
-            <!-- { name: "Mr SANTHANA RAJ K", date: "16th August" }, -->
-            <!-- { name: "Mrs VASANTHAKUMARI", date: "16th August" }, -->
-            <!-- { name: "Mr KOILRAJ J", date: "16th August" }, -->
-            <!-- { name: "Mrs EVANGELINE R W/O RANJITH BALAN M", date: "16th August" }, -->
-            <!-- { name: "Mr BALAJI@BENJAMIN FRANKLIN S", date: "16th August" }, -->
-            <!-- { name: "Mr RUBAN P", date: "16th August" }, -->
-            <!-- { name: "Mrs SELVA RANI Y W/O YOVEL GNANAPAL S", date: "16th August" }, -->
-            <!-- { name: "Mr IMMANUEL J", date: "16th August" }, -->
-            <!-- { name: "Mrs JASMINE ASNATH DEBORAH W/O JAISON CLEMENT A R", date: "16th August" }, -->
-            <!-- { name: "Mrs SOWMIYA R W/O JOHNPAUL V", date: "16th August" }, -->
-            <!-- { name: "Ms DR ADLIN SMITHA A D/O ALBERT S", date: "16th August" }, -->
-            <!-- { name: "Mr NICKSON PREM KUMAR P", date: "16th August" }, -->
-            <!-- { name: "Mrs JENEFER MARTIN W/O VIGESH MARCUS J", date: "16th August" }, -->
-            <!-- { name: "Mrs JENIFA JULIET REBEKKAL W/O PRABHU G", date: "16th August" }, -->
-            <!-- { name: "Mrs JENIPHA PRISCILLA A W/O CEPHAS ARUN L", date: "16th August" }, -->
-            <!-- { name: "Ms JUILET REBEKAL M D/O MANICKARAJ M", date: "16th August" }, -->
-            <!-- { name: "Mr ISSAC YESUDHAS B S/O BALRAJ K", date: "16th August" }, -->
-            <!-- { name: "Ms SHENIKA SHALU S D/O SUNILKUMAR M", date: "16th August" }, -->
-            <!-- { name: "Master BLESSON JOHN S S/O SAMRAJ NEEGAR", date: "16th August" }, -->
-            <!-- { name: "Ms JOS SHERLYN A J D/O ALFRED JEBARAJ J", date: "16th August" }, -->
-            <!-- { name: "Master JADEN DAVIDSON V S/O VETHAMANICKKAM NIKSAN D", date: "16th August" }, -->
+            // ==================== BIRTHDAYS (Aug 16 - Aug 22) ====================
+            // August 16
+            { name: "Mr JOHN KARUNAKARAN D", date: "16th August" },
+            { name: "Mr SANTHANA RAJ K", date: "16th August" },
+            { name: "Mrs VASANTHAKUMARI", date: "16th August" },
+            { name: "Mr KOILRAJ J", date: "16th August" },
+            { name: "Mrs EVANGELINE R W/O RANJITH BALAN M", date: "16th August" },
+            { name: "Mr BALAJI@BENJAMIN FRANKLIN S", date: "16th August" },
+            { name: "Mr RUBAN P", date: "16th August" },
+            { name: "Mrs SELVA RANI Y W/O YOVEL GNANAPAL S", date: "16th August" },
+            { name: "Mr IMMANUEL J", date: "16th August" },
+            { name: "Mrs JASMINE ASNATH DEBORAH W/O JAISON CLEMENT A R", date: "16th August" },
+            { name: "Mrs SOWMIYA R W/O JOHNPAUL V", date: "16th August" },
+            { name: "Ms DR ADLIN SMITHA A D/O ALBERT S", date: "16th August" },
+            { name: "Mr NICKSON PREM KUMAR P", date: "16th August" },
+            { name: "Mrs JENEFER MARTIN W/O VIGESH MARCUS J", date: "16th August" },
+            { name: "Mrs JENIFA JULIET REBEKKAL W/O PRABHU G", date: "16th August" },
+            { name: "Mrs JENIPHA PRISCILLA A W/O CEPHAS ARUN L", date: "16th August" },
+            { name: "Ms JUILET REBEKAL M D/O MANICKARAJ M", date: "16th August" },
+            { name: "Mr ISSAC YESUDHAS B S/O BALRAJ K", date: "16th August" },
+            { name: "Ms SHENIKA SHALU S D/O SUNILKUMAR M", date: "16th August" },
+            { name: "Master BLESSON JOHN S S/O SAMRAJ NEEGAR", date: "16th August" },
+            { name: "Ms JOS SHERLYN A J D/O ALFRED JEBARAJ J", date: "16th August" },
+            { name: "Master JADEN DAVIDSON V S/O VETHAMANICKKAM NIKSAN D", date: "16th August" },
 
-            <!-- // August 17 -->
-            <!-- { name: "Mr RATNAVELU S", date: "17th August" }, -->
-            <!-- { name: "Mrs MENAKA GEORGE", date: "17th August" }, -->
-            <!-- { name: "Mrs DAISY SIMON", date: "17th August" }, -->
-            <!-- { name: "Mrs ANNAL JEBAKANI A W/O ANANDA SUNDARAM S", date: "17th August" }, -->
-            <!-- { name: "Mrs GNANABAI NELSON R W/O RAJAKUMAR NELSON P", date: "17th August" }, -->
-            <!-- { name: "Mr DAVID D", date: "17th August" }, -->
-            <!-- { name: "Mr SELVIN A", date: "17th August" }, -->
-            <!-- { name: "Mrs DELSY PAULINE JOSHUA W/O JOSHUA SAMSON", date: "17th August" }, -->
-            <!-- { name: "Mr LAWRANCE R", date: "17th August" }, -->
-            <!-- { name: "Mrs JEBA M W/O UTHAYAKUMAR G", date: "17th August" }, -->
-            <!-- { name: "Mrs SWEETY MERCY", date: "17th August" }, -->
-            <!-- { name: "Mr GODWIN GNANAMANI", date: "17th August" }, -->
-            <!-- { name: "Mr RAVIKUMAR ABRAHAM P", date: "17th August" }, -->
-            <!-- { name: "Mrs LEETHIYAL C W/O ABISHEK S", date: "17th August" }, -->
-            <!-- { name: "Mr PRAVEENSON J", date: "17th August" }, -->
-            <!-- { name: "Mrs GNANADEEPAM MANJULA A W/O JASPER J", date: "17th August" }, -->
-            <!-- { name: "Ms ANGEL P D/O PACKIARAJ D", date: "17th August" }, -->
-            <!-- { name: "Mr MANO JASHUVA J S/O MABEL JESSY CHANDRA I S", date: "17th August" }, -->
-            <!-- { name: "Mr FRANKLIN M S/O MOSES N", date: "17th August" }, -->
-            <!-- { name: "Mr VANCE MERVIN C S/O CHANDRA MOHAN G D", date: "17th August" }, -->
-            <!-- { name: "Mr ALWYN SMITH APPADURAI S/O ADAM APPADURAI", date: "17th August" }, -->
-            <!-- { name: "Mr ALGAIN JONATHAN PANDIAN W S/O DR. WILLIAM VASANTHA SEKAR V P V", date: "17th August" }, -->
-            <!-- { name: "Master ALBY PAUL T P S/O PRINCE T P", date: "17th August" }, -->
-            <!-- { name: "Ms KEZIAH ROSETTE D/O GILBERT THANGARAJ R", date: "17th August" }, -->
+            // August 17
+            { name: "Mr RATNAVELU S", date: "17th August" },
+            { name: "Mrs MENAKA GEORGE", date: "17th August" },
+            { name: "Mrs DAISY SIMON", date: "17th August" },
+            { name: "Mrs ANNAL JEBAKANI A W/O ANANDA SUNDARAM S", date: "17th August" },
+            { name: "Mrs GNANABAI NELSON R W/O RAJAKUMAR NELSON P", date: "17th August" },
+            { name: "Mr DAVID D", date: "17th August" },
+            { name: "Mr SELVIN A", date: "17th August" },
+            { name: "Mrs DELSY PAULINE JOSHUA W/O JOSHUA SAMSON", date: "17th August" },
+            { name: "Mr LAWRANCE R", date: "17th August" },
+            { name: "Mrs JEBA M W/O UTHAYAKUMAR G", date: "17th August" },
+            { name: "Mrs SWEETY MERCY", date: "17th August" },
+            { name: "Mr GODWIN GNANAMANI", date: "17th August" },
+            { name: "Mr RAVIKUMAR ABRAHAM P", date: "17th August" },
+            { name: "Mrs LEETHIYAL C W/O ABISHEK S", date: "17th August" },
+            { name: "Mr PRAVEENSON J", date: "17th August" },
+            { name: "Mrs GNANADEEPAM MANJULA A W/O JASPER J", date: "17th August" },
+            { name: "Ms ANGEL P D/O PACKIARAJ D", date: "17th August" },
+            { name: "Mr MANO JASHUVA J S/O MABEL JESSY CHANDRA I S", date: "17th August" },
+            { name: "Mr FRANKLIN M S/O MOSES N", date: "17th August" },
+            { name: "Mr VANCE MERVIN C S/O CHANDRA MOHAN G D", date: "17th August" },
+            { name: "Mr ALWYN SMITH APPADURAI S/O ADAM APPADURAI", date: "17th August" },
+            { name: "Mr ALGAIN JONATHAN PANDIAN W S/O DR. WILLIAM VASANTHA SEKAR V P V", date: "17th August" },
+            { name: "Master ALBY PAUL T P S/O PRINCE T P", date: "17th August" },
+            { name: "Ms KEZIAH ROSETTE D/O GILBERT THANGARAJ R", date: "17th August" },
 
-            <!-- // August 18 -->
-            <!-- { name: "Mrs PONMANI M H", date: "18th August" }, -->
-            <!-- { name: "Mrs ARUMAI THANGABAI W/O KUTTINADAN C", date: "18th August" }, -->
-            <!-- { name: "Mr SELVENDRAN R", date: "18th August" }, -->
-            <!-- { name: "Mr VELLADURAI PAULRAJ K", date: "18th August" }, -->
-            <!-- { name: "Mr MANUEL JOHNSON V P V", date: "18th August" }, -->
-            <!-- { name: "Mr RAJA PRATHAP SHING S H/O JASLIN RAJASEELI R", date: "18th August" }, -->
-            <!-- { name: "Mr VIJAYAKUMAR SAMUEL E", date: "18th August" }, -->
-            <!-- { name: "Mr PERKINS JONES SAMUEL S/O PREMILA JAYAKKAR", date: "18th August" }, -->
-            <!-- { name: "Mrs JASMINE SUGANTHI W/O CHRISTPHEN PRAVIN KUMAR", date: "18th August" }, -->
-            <!-- { name: "Mrs JAYAPRABHA A W/O SOLOMON JEBAKUMAR S", date: "18th August" }, -->
-            <!-- { name: "Mr ISAAC DANIELRAJ G", date: "18th August" }, -->
-            <!-- { name: "Mr JOSHINTH SURESH", date: "18th August" }, -->
-            <!-- { name: "Mr SIMYON JEBESTION Y", date: "18th August" }, -->
-            <!-- { name: "Ms HARIPH NITHIS PRASATH S D D/O DAVID SAMPATHKUMAR S", date: "18th August" }, -->
-            <!-- { name: "Mr ROZAC HANNAN SAMUEL S/O ROBERT KENNEDY Z", date: "18th August" }, -->
-            <!-- { name: "Mr JOSHVA P S/O PAUL SAMUEL I", date: "18th August" }, -->
-            <!-- { name: "Mr SAMUVEL RAJAKUMAR I S/O RAJESWARI S", date: "18th August" }, -->
-            <!-- { name: "Mr JEREMIAL PAUL HANS J S/O JOHN SUNDERSINGH J", date: "18th August" }, -->
-            <!-- { name: "Ms JENILA JUDITH D/O MOSES SUTHANTHIRA KUMAR S", date: "18th August" }, -->
-            <!-- { name: "Ms JANATE ESTHER Y D/O YOVEL GNANAPAL S", date: "18th August" }, -->
-            <!-- { name: "Master GIFTSON JACOB S S/O SAM KUMAR C", date: "18th August" }, -->
-            <!-- { name: "Ms VERONICA SHREE S DIL/O EBENEZER MANI", date: "18th August" }, -->
+            // August 18
+            { name: "Mrs PONMANI M H", date: "18th August" },
+            { name: "Mrs ARUMAI THANGABAI W/O KUTTINADAN C", date: "18th August" },
+            { name: "Mr SELVENDRAN R", date: "18th August" },
+            { name: "Mr VELLADURAI PAULRAJ K", date: "18th August" },
+            { name: "Mr MANUEL JOHNSON V P V", date: "18th August" },
+            { name: "Mr RAJA PRATHAP SHING S H/O JASLIN RAJASEELI R", date: "18th August" },
+            { name: "Mr VIJAYAKUMAR SAMUEL E", date: "18th August" },
+            { name: "Mr PERKINS JONES SAMUEL S/O PREMILA JAYAKKAR", date: "18th August" },
+            { name: "Mrs JASMINE SUGANTHI W/O CHRISTPHEN PRAVIN KUMAR", date: "18th August" },
+            { name: "Mrs JAYAPRABHA A W/O SOLOMON JEBAKUMAR S", date: "18th August" },
+            { name: "Mr ISAAC DANIELRAJ G", date: "18th August" },
+            { name: "Mr JOSHINTH SURESH", date: "18th August" },
+            { name: "Mr SIMYON JEBESTION Y", date: "18th August" },
+            { name: "Ms HARIPH NITHIS PRASATH S D D/O DAVID SAMPATHKUMAR S", date: "18th August" },
+            { name: "Mr ROZAC HANNAN SAMUEL S/O ROBERT KENNEDY Z", date: "18th August" },
+            { name: "Mr JOSHVA P S/O PAUL SAMUEL I", date: "18th August" },
+            { name: "Mr SAMUVEL RAJAKUMAR I S/O RAJESWARI S", date: "18th August" },
+            { name: "Mr JEREMIAL PAUL HANS J S/O JOHN SUNDERSINGH J", date: "18th August" },
+            { name: "Ms JENILA JUDITH D/O MOSES SUTHANTHIRA KUMAR S", date: "18th August" },
+            { name: "Ms JANATE ESTHER Y D/O YOVEL GNANAPAL S", date: "18th August" },
+            { name: "Master GIFTSON JACOB S S/O SAM KUMAR C", date: "18th August" },
+            { name: "Ms VERONICA SHREE S DIL/O EBENEZER MANI", date: "18th August" },
 
-            <!-- // August 19 -->
-            <!-- { name: "Mr AMIRTHAM D S", date: "19th August" }, -->
-            <!-- { name: "Mrs HEPSIBHA SUGIRTHA MALAR", date: "19th August" }, -->
-            <!-- { name: "Mr EBENEZER GANDHI D", date: "19th August" }, -->
-            <!-- { name: "Mrs POORNAM M W/O MANUEL K", date: "19th August" }, -->
-            <!-- { name: "Mr SELVARAJ S", date: "19th August" }, -->
-            <!-- { name: "Mr KENNADY J", date: "19th August" }, -->
-            <!-- { name: "Mr CHRISTOPHER SAMDOSS H/O BRIGTHY KIRUBHA", date: "19th August" }, -->
-            <!-- { name: "Mr REUBAN GNANASIGAMANI T H/O BERCY VIJAYASEELI", date: "19th August" }, -->
-            <!-- { name: "Mr NIJASTHA L", date: "19th August" }, -->
-            <!-- { name: "Mr BELSON J S/O STELLA J", date: "19th August" }, -->
-            <!-- { name: "Mr BENSON HEBREW DENVER S/O STANLEY SATHEESH KUMAR J", date: "19th August" }, -->
-            <!-- { name: "Ms ANITHA STELLA L D/O LAZAR A", date: "19th August" }, -->
-            <!-- { name: "Mr MOSES T S/O THIRAVIAM M", date: "19th August" }, -->
-            <!-- { name: "Ms VENCY A D/O ARUL RAJ N", date: "19th August" }, -->
-            <!-- { name: "Ms SHAREN MIRAKLIN S D/O STALIN K", date: "19th August" }, -->
-            <!-- { name: "Ms SMITHA KENNETH A D/O ARULRAJ DEVADOSS S", date: "19th August" }, -->
-            <!-- { name: "Mr ALFIE A S/O ANAND BABU G", date: "19th August" }, -->
-            <!-- { name: "Mr PAUL NEHEMIAH A S/O ARUL SAMYDHASS", date: "19th August" }, -->
-            <!-- { name: "Master ARVIN KIRUBAKAR L S/O LAWRENCE S", date: "19th August" }, -->
-            <!-- { name: "Ms KRISTA KEERTHANAI D/O LAWRENCE S", date: "19th August" }, -->
-            <!-- { name: "Ms JESLYN SALLIE D/O JOHN PAKIARAJ K", date: "19th August" }, -->
+            // August 19
+            { name: "Mr AMIRTHAM D S", date: "19th August" },
+            { name: "Mrs HEPSIBHA SUGIRTHA MALAR", date: "19th August" },
+            { name: "Mr EBENEZER GANDHI D", date: "19th August" },
+            { name: "Mrs POORNAM M W/O MANUEL K", date: "19th August" },
+            { name: "Mr SELVARAJ S", date: "19th August" },
+            { name: "Mr KENNADY J", date: "19th August" },
+            { name: "Mr CHRISTOPHER SAMDOSS H/O BRIGTHY KIRUBHA", date: "19th August" },
+            { name: "Mr REUBAN GNANASIGAMANI T H/O BERCY VIJAYASEELI", date: "19th August" },
+            { name: "Mr NIJASTHA L", date: "19th August" },
+            { name: "Mr BELSON J S/O STELLA J", date: "19th August" },
+            { name: "Mr BENSON HEBREW DENVER S/O STANLEY SATHEESH KUMAR J", date: "19th August" },
+            { name: "Ms ANITHA STELLA L D/O LAZAR A", date: "19th August" },
+            { name: "Mr MOSES T S/O THIRAVIAM M", date: "19th August" },
+            { name: "Ms VENCY A D/O ARUL RAJ N", date: "19th August" },
+            { name: "Ms SHAREN MIRAKLIN S D/O STALIN K", date: "19th August" },
+            { name: "Ms SMITHA KENNETH A D/O ARULRAJ DEVADOSS S", date: "19th August" },
+            { name: "Mr ALFIE A S/O ANAND BABU G", date: "19th August" },
+            { name: "Mr PAUL NEHEMIAH A S/O ARUL SAMYDHASS", date: "19th August" },
+            { name: "Master ARVIN KIRUBAKAR L S/O LAWRENCE S", date: "19th August" },
+            { name: "Ms KRISTA KEERTHANAI D/O LAWRENCE S", date: "19th August" },
+            { name: "Ms JESLYN SALLIE D/O JOHN PAKIARAJ K", date: "19th August" },
 
-            <!-- // August 20 -->
-            <!-- { name: "Mrs JOY ELIZABETH M/O PRABAKAR C", date: "20th August" }, -->
-            <!-- { name: "Mrs PAPPA S", date: "20th August" }, -->
-            <!-- { name: "Mrs SELVI REBECCA VICTORIA W/O DAVID JOHN JEBASINGH H", date: "20th August" }, -->
-            <!-- { name: "Mrs SWEETY M W/O MATHIALAGAN M", date: "20th August" }, -->
-            <!-- { name: "Mr JASPER JOHN PAUL", date: "20th August" }, -->
-            <!-- { name: "Mrs VASANTHI CHITHIRAIRAJ W/O CHITHIRAI RAJ J", date: "20th August" }, -->
-            <!-- { name: "Mr EDISON G", date: "20th August" }, -->
-            <!-- { name: "Mrs SHAILA KANI MOZHI", date: "20th August" }, -->
-            <!-- { name: "Mrs SANDHYA S W/O PRAVEEN KUMAR M", date: "20th August" }, -->
-            <!-- { name: "Mr VICTOR SELVARAJ S S/O SAMUVEL THAVEETHU", date: "20th August" }, -->
-            <!-- { name: "Mr JERIL DANNY S/O MALARVIZHI E", date: "20th August" }, -->
-            <!-- { name: "Mr SAJU C J S/O JAYAKUMAR C", date: "20th August" }, -->
-            <!-- { name: "Ms JOANNA JERIN R D/O JOSEPHINE SHIRLEY REGINA J", date: "20th August" }, -->
-            <!-- { name: "Mr JASON PERSLEY J S/O JASPER JOHN PAUL", date: "20th August" }, -->
-            <!-- { name: "Master JUDSON SAMUEL J S/O JUSTIN PETER I", date: "20th August" }, -->
-            <!-- { name: "Ms SHARON ALYSSA D/O SANTHOSH S", date: "20th August" }, -->
-            <!-- { name: "Ms AMELIA GIANNA GD/O AMY JEMIMA C", date: "20th August" }, -->
-            <!-- { name: "Master JOHN JACINTO S/O PRINCE ROBERTSON SMITH", date: "20th August" }, -->
-            <!-- { name: "Ms ZARAH D/O MARY", date: "20th August" }, -->
-            <!-- { name: "Ms MIANNA GIFT RINGAL D/O RINGEL EBENEZER N", date: "20th August" }, -->
+            // August 20
+            { name: "Mrs JOY ELIZABETH M/O PRABAKAR C", date: "20th August" },
+            { name: "Mrs PAPPA S", date: "20th August" },
+            { name: "Mrs SELVI REBECCA VICTORIA W/O DAVID JOHN JEBASINGH H", date: "20th August" },
+            { name: "Mrs SWEETY M W/O MATHIALAGAN M", date: "20th August" },
+            { name: "Mr JASPER JOHN PAUL", date: "20th August" },
+            { name: "Mrs VASANTHI CHITHIRAIRAJ W/O CHITHIRAI RAJ J", date: "20th August" },
+            { name: "Mr EDISON G", date: "20th August" },
+            { name: "Mrs SHAILA KANI MOZHI", date: "20th August" },
+            { name: "Mrs SANDHYA S W/O PRAVEEN KUMAR M", date: "20th August" },
+            { name: "Mr VICTOR SELVARAJ S S/O SAMUVEL THAVEETHU", date: "20th August" },
+            { name: "Mr JERIL DANNY S/O MALARVIZHI E", date: "20th August" },
+            { name: "Mr SAJU C J S/O JAYAKUMAR C", date: "20th August" },
+            { name: "Ms JOANNA JERIN R D/O JOSEPHINE SHIRLEY REGINA J", date: "20th August" },
+            { name: "Mr JASON PERSLEY J S/O JASPER JOHN PAUL", date: "20th August" },
+            { name: "Master JUDSON SAMUEL J S/O JUSTIN PETER I", date: "20th August" },
+            { name: "Ms SHARON ALYSSA D/O SANTHOSH S", date: "20th August" },
+            { name: "Ms AMELIA GIANNA GD/O AMY JEMIMA C", date: "20th August" },
+            { name: "Master JOHN JACINTO S/O PRINCE ROBERTSON SMITH", date: "20th August" },
+            { name: "Ms ZARAH D/O MARY", date: "20th August" },
+            { name: "Ms MIANNA GIFT RINGAL D/O RINGEL EBENEZER N", date: "20th August" },
 
-            <!-- // August 21 -->
-            <!-- { name: "Mrs VIJAYARANI SUSILA W/O SESSION RAJA", date: "21st August" }, -->
-            <!-- { name: "Mrs GNANAPUSHPAM A W/O ANTONY MUTHU M", date: "21st August" }, -->
-            <!-- { name: "Mr MUTHURAJ EDWIN D", date: "21st August" }, -->
-            <!-- { name: "Mr AUGUSTIN GNANASEKAR", date: "21st August" }, -->
-            <!-- { name: "Mr RAJKUMAR J", date: "21st August" }, -->
-            <!-- { name: "Mr EVEREST JACOB K", date: "21st August" }, -->
-            <!-- { name: "Mrs GLORY V W/O SAM ASIR JELL R", date: "21st August" }, -->
-            <!-- { name: "Mr SUNDAR SINGH J", date: "21st August" }, -->
-            <!-- { name: "Mr JAYARAJ L", date: "21st August" }, -->
-            <!-- { name: "Mr MOSES AMAL DASS J S/O JOHNSON KOIL RAJAN R D", date: "21st August" }, -->
-            <!-- { name: "Mr JAGARATCHAGAN R S/O RAVI D", date: "21st August" }, -->
-            <!-- { name: "Mr EDWIN DAVID P S/O PRINCE SOLOMON D", date: "21st August" }, -->
-            <!-- { name: "Mrs AUGUSTA A W/O ALLWIN I", date: "21st August" }, -->
-            <!-- { name: "Mr AKASH JEBIN S/O MUTHURAJ J", date: "21st August" }, -->
-            <!-- { name: "Mr JERIEL GIDEON S S/O SOLOMEN THINNAKER DEVEVARAM", date: "21st August" }, -->
-            <!-- { name: "Mr JOHN PRABHU G S/O GNANARAJ J", date: "21st August" }, -->
-            <!-- { name: "Ms SHERLIN KEZIA N A D/O SHERLIN KEZIA N A", date: "21st August" }, -->
-            <!-- { name: "Master INIYAN DARIUS S/O STEPHEN DHILIP SUNDAR R", date: "21st August" }, -->
+            // August 21
+            { name: "Mrs VIJAYARANI SUSILA W/O SESSION RAJA", date: "21st August" },
+            { name: "Mrs GNANAPUSHPAM A W/O ANTONY MUTHU M", date: "21st August" },
+            { name: "Mr MUTHURAJ EDWIN D", date: "21st August" },
+            { name: "Mr AUGUSTIN GNANASEKAR", date: "21st August" },
+            { name: "Mr RAJKUMAR J", date: "21st August" },
+            { name: "Mr EVEREST JACOB K", date: "21st August" },
+            { name: "Mrs GLORY V W/O SAM ASIR JELL R", date: "21st August" },
+            { name: "Mr SUNDAR SINGH J", date: "21st August" },
+            { name: "Mr JAYARAJ L", date: "21st August" },
+            { name: "Mr MOSES AMAL DASS J S/O JOHNSON KOIL RAJAN R D", date: "21st August" },
+            { name: "Mr JAGARATCHAGAN R S/O RAVI D", date: "21st August" },
+            { name: "Mr EDWIN DAVID P S/O PRINCE SOLOMON D", date: "21st August" },
+            { name: "Mrs AUGUSTA A W/O ALLWIN I", date: "21st August" },
+            { name: "Mr AKASH JEBIN S/O MUTHURAJ J", date: "21st August" },
+            { name: "Mr JERIEL GIDEON S S/O SOLOMEN THINNAKER DEVEVARAM", date: "21st August" },
+            { name: "Mr JOHN PRABHU G S/O GNANARAJ J", date: "21st August" },
+            { name: "Ms SHERLIN KEZIA N A D/O SHERLIN KEZIA N A", date: "21st August" },
+            { name: "Master INIYAN DARIUS S/O STEPHEN DHILIP SUNDAR R", date: "21st August" },
 
-            <!-- // August 22 -->
-            <!-- { name: "Mrs AGASTI BAI G", date: "22nd August" }, -->
-            <!-- { name: "Mrs SELVI S", date: "22nd August" }, -->
-            <!-- { name: "Mr PAULDOSS S", date: "22nd August" }, -->
-            <!-- { name: "Mrs SELVAMANI A", date: "22nd August" }, -->
-            <!-- { name: "Mr AUGUSTIN I S/O SAROJINIAMMAL", date: "22nd August" }, -->
-            <!-- { name: "Mr SELVAKUMAR A", date: "22nd August" }, -->
-            <!-- { name: "Mrs SHEELA ANAND W/O ANAND PETER", date: "22nd August" }, -->
-            <!-- { name: "Mr DAVIDSON G", date: "22nd August" }, -->
-            <!-- { name: "Mrs JANSI D W/O JEBASTIN PATTURAJ D", date: "22nd August" }, -->
-            <!-- { name: "Mrs JANCY RANI G", date: "22nd August" }, -->
-            <!-- { name: "Mr ANANDRAJ M", date: "22nd August" }, -->
-            <!-- { name: "Mr JEBASELAN RAJKUMAR S/O JONES BARNABASS", date: "22nd August" }, -->
-            <!-- { name: "Mr SYLVANUS PRITHIM SUGANTH S", date: "22nd August" }, -->
-            <!-- { name: "Mr JEBARAJ SAMUEL DORAI D", date: "22nd August" }, -->
-            <!-- { name: "Ms ANGEL D/O RENI C", date: "22nd August" }, -->
-            <!-- { name: "Ms CATHERINE BHAGYASHREE R D/O RAJA JOHN C", date: "22nd August" }, -->
-            <!-- { name: "Mr AERONE A S/O ABRAHAM IMMANUEL G", date: "22nd August" }, -->
-            <!-- { name: "Mr JOEL RICHARD R S/O RAMESH KUMAR J", date: "22nd August" } -->
-        <!-- ]; -->
+            // August 22
+            { name: "Mrs AGASTI BAI G", date: "22nd August" },
+            { name: "Mrs SELVI S", date: "22nd August" },
+            { name: "Mr PAULDOSS S", date: "22nd August" },
+            { name: "Mrs SELVAMANI A", date: "22nd August" },
+            { name: "Mr AUGUSTIN I S/O SAROJINIAMMAL", date: "22nd August" },
+            { name: "Mr SELVAKUMAR A", date: "22nd August" },
+            { name: "Mrs SHEELA ANAND W/O ANAND PETER", date: "22nd August" },
+            { name: "Mr DAVIDSON G", date: "22nd August" },
+            { name: "Mrs JANSI D W/O JEBASTIN PATTURAJ D", date: "22nd August" },
+            { name: "Mrs JANCY RANI G", date: "22nd August" },
+            { name: "Mr ANANDRAJ M", date: "22nd August" },
+            { name: "Mr JEBASELAN RAJKUMAR S/O JONES BARNABASS", date: "22nd August" },
+            { name: "Mr SYLVANUS PRITHIM SUGANTH S", date: "22nd August" },
+            { name: "Mr JEBARAJ SAMUEL DORAI D", date: "22nd August" },
+            { name: "Ms ANGEL D/O RENI C", date: "22nd August" },
+            { name: "Ms CATHERINE BHAGYASHREE R D/O RAJA JOHN C", date: "22nd August" },
+            { name: "Mr AERONE A S/O ABRAHAM IMMANUEL G", date: "22nd August" },
+            { name: "Mr JOEL RICHARD R S/O RAMESH KUMAR J", date: "22nd August" }
+        ];
 
-        <!-- let currentIndex = 0; -->
+        let currentIndex = 0;
 
-        <!-- function formatDateBig(dateStr, label) { -->
-            <!-- if (!dateStr) return ""; -->
-            <!-- const match = dateStr.match(/^(\d+)(.*)$/); -->
-            <!-- if (match) { -->
-                <!-- return `${label}: <span class="day-number">${match[1]}</span>${match[2]}`; -->
-            <!-- } -->
-            <!-- return `${label}: ${dateStr}`; -->
-        <!-- } -->
+        function formatDateBig(dateStr, label) {
+            if (!dateStr) return "";
+            const match = dateStr.match(/^(\d+)(.*)$/);
+            if (match) {
+                return `${label}: <span class="day-number">${match[1]}</span>${match[2]}`;
+            }
+            return `${label}: ${dateStr}`;
+        }
 
-        <!-- function refreshContent() { -->
-            <!-- try { -->
-                <!-- if (!rawData || rawData.length === 0) return; -->
+        function refreshContent() {
+            try {
+                if (!rawData || rawData.length === 0) return;
                 
-                <!-- const item = rawData[currentIndex]; -->
-                <!-- const currentYear = new Date().getFullYear(); -->
+                const item = rawData[currentIndex];
+                const currentYear = new Date().getFullYear();
                 
-                <!-- let headingText = ""; -->
-                <!-- let names = ""; -->
-                <!-- let milestoneText = ""; -->
-                <!-- let dateHTML = ""; -->
+                let headingText = "";
+                let names = "";
+                let milestoneText = "";
+                let dateHTML = "";
 
-                <!-- if (item.husband && item.wife) { -->
-                    <!-- let hName = item.husband.replace(/^(Mr|Mrs|Ms)\.?\s+/i, ''); -->
-                    <!-- let wName = item.wife.replace(/^(Mr|Mrs|Ms)\.?\s+/i, ''); -->
+                if (item.husband && item.wife) {
+                    let hName = item.husband.replace(/^(Mr|Mrs|Ms)\.?\s+/i, '');
+                    let wName = item.wife.replace(/^(Mr|Mrs|Ms)\.?\s+/i, '');
                     
-                    <!-- let parsedYear = parseInt(item.year); -->
-                    <!-- if (isNaN(parsedYear)) parsedYear = currentYear; -->
-                    <!-- const milestone = currentYear - parsedYear; -->
+                    let parsedYear = parseInt(item.year);
+                    if (isNaN(parsedYear)) parsedYear = currentYear;
+                    const milestone = currentYear - parsedYear;
 
-                    <!-- headingText = "Wedding Wish"; -->
-                    <!-- names = `Mr. ${hName}<br>& Mrs. ${wName}`; -->
-                    <!-- milestoneText = `Celebrating ${milestone} Years of Marriage`; -->
-                    <!-- dateHTML = formatDateBig(item.date, "Wedding Day"); -->
-                    <!-- document.getElementById('bg').style.backgroundImage = bgImages.wedding; -->
-                <!-- }  -->
-                <!-- else if (item.name) { -->
-                    <!-- headingText = "Birthday Wish"; -->
-                    <!-- names = item.name; -->
-                    <!-- milestoneText = "Celebrating Joyful Birthday"; -->
-                    <!-- dateHTML = formatDateBig(item.date, "Birthday"); -->
-                    <!-- document.getElementById('bg').style.backgroundImage = bgImages.birthday; -->
-                <!-- } -->
+                    headingText = "Wedding Wish";
+                    names = `Mr. ${hName}<br>& Mrs. ${wName}`;
+                    milestoneText = `Celebrating ${milestone} Years of Marriage`;
+                    dateHTML = formatDateBig(item.date, "Wedding Day");
+                    document.getElementById('bg').style.backgroundImage = bgImages.wedding;
+                } 
+                else if (item.name) {
+                    headingText = "Birthday Wish";
+                    names = item.name;
+                    milestoneText = "Celebrating Joyful Birthday";
+                    dateHTML = formatDateBig(item.date, "Birthday");
+                    document.getElementById('bg').style.backgroundImage = bgImages.birthday;
+                }
 
-                <!-- document.getElementById('heading-line').innerText = headingText; -->
-                <!-- document.getElementById('names-line').innerHTML = names; -->
-                <!-- document.getElementById('milestone-line').innerText = milestoneText; -->
-                <!-- document.getElementById('date-line').innerHTML = dateHTML; -->
+                document.getElementById('heading-line').innerText = headingText;
+                document.getElementById('names-line').innerHTML = names;
+                document.getElementById('milestone-line').innerText = milestoneText;
+                document.getElementById('date-line').innerHTML = dateHTML;
 
-            <!-- } catch (error) { -->
-                <!-- console.error("Error at index: " + currentIndex, error); -->
-            <!-- } finally { -->
-                <!-- currentIndex = (currentIndex + 1) % rawData.length; -->
-            <!-- } -->
-        <!-- } -->
+            } catch (error) {
+                console.error("Error at index: " + currentIndex, error);
+            } finally {
+                currentIndex = (currentIndex + 1) % rawData.length;
+            }
+        }
 
-        <!-- refreshContent(); -->
-        <!-- setInterval(refreshContent, slideDuration); -->
-    <!-- </script> -->
-<!-- </body> -->
-<!-- </html> -->
+        refreshContent();
+        setInterval(refreshContent, slideDuration);
+    </script>
+</body>
+</html>
