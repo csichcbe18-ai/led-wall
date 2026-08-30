@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Church LED Display - Celebration Showcase</title>
     <style>
+        /* Base configuration derived from your working LED wall template */
         body, html { 
             margin: 0; 
             padding: 0; 
@@ -46,6 +47,7 @@
             box-sizing: border-box;
         }
 
+        /* Fixed Premium Glassmorphic Container */
         .ui-card {
             background: rgba(255, 255, 255, 0.08);
             -webkit-backdrop-filter: blur(14px);
@@ -59,6 +61,7 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
         
+        /* Modern Premium Dynamic Heading Badge */
         #heading-line {
             display: inline-block;
             font-size: 40px;
@@ -73,6 +76,7 @@
             border: 1px solid rgba(255, 215, 0, 0.35);
         }
 
+        /* High-Performance Readable Typography Layers */
         #names-line { 
             font-size: 36px; 
             font-weight: 900; 
@@ -134,51 +138,53 @@
     <script>
         const slideDuration = 2000; // 2 seconds per slide
 
+        // Background image definitions
         const bgImages = {
             wedding: "url('wedding.jpeg')",
             birthday: "url('birthday.jpeg')"
         };
 
+        // DATA REGISTRY ZONE (Updated for August 30th & 31st Birthdays)
         const rawData = [
-            // ==================== BIRTHDAYS (Aug 30) ====================[cite: 1]
-            { name: "Mrs THAVAMANI THANGAIAH", date: "30th August" },[cite: 1]
-            { name: "Mrs GRACE KANGARATHINAM RAJKUMAR W/O JUDSON SUDHAKARAJ J", date: "30th August" },[cite: 1]
-            { name: "Mrs ANITHA A W/O ASIR MANOGAR B", date: "30th August" },[cite: 1]
-            { name: "Mr FREDDY PAUL M S/O MOSSES PONNAIAN M D", date: "30th August" },[cite: 1]
-            { name: "Mr JEYAPAUL I", date: "30th August" },[cite: 1]
-            { name: "Mr PRABHU BALACHANDIRAN S S/O SWAMIADIYAN K", date: "30th August" },[cite: 1]
-            { name: "Mrs MATHIVATHANI G W/O JESURAJ S", date: "30th August" },[cite: 1]
-            { name: "Mrs ABISHA MERCY G W/O JOHN PETER B", date: "30th August" },[cite: 1]
-            { name: "Mr ALWIN RAJ B", date: "30th August" },[cite: 1]
-            { name: "Mr JAFIN BRIGHT S S/O JACOB JEYASELVAN", date: "30th August" },[cite: 1]
-            { name: "Mr SEKHAR B S/O BASKAR T", date: "30th August" },[cite: 1]
-            { name: "Mrs GRACY EVANGELINE D D/O DAVIDSON K", date: "30th August" },[cite: 1]
-            { name: "Ms BLESSITA D/O ANANDARAJ JEBASTIN B", date: "30th August" },[cite: 1]
-            { name: "Mr BENJAMIN GEORGE DAVID S S/O SAM RAJ KUMAR D", date: "30th August" },[cite: 1]
-            { name: "Ms JENNIFER MAGDALENE A D/O ABRAHAM JAIKAR D", date: "30th August" },[cite: 1]
-            { name: "Mr ABDIEL SAM THOMAS R S/O BERCY VIJAYASEELI", date: "30th August" },[cite: 1]
-            { name: "Ms JEFFINA S D/O SELVABALAN R", date: "30th August" },[cite: 1]
-            { name: "Ms JAZLYN TIRZAH D/O JAMES HUBERT MICHEAL KING S", date: "30th August" },[cite: 1]
-            { name: "Master JOES JEMSON S/O BAGIYANATHAN RUBAN T", date: "30th August" },[cite: 1]
-            { name: "Master JOHAN DAVIS S/O SOUNDRA RAJAN D", date: "30th August" },[cite: 1]
+            // === BIRTHDAYS: AUGUST 30 ===
+            { name: "Mrs THAVAMANI THANGAIAH", date: "30th August" },
+            { name: "Mrs GRACE KANGARATHINAM RAJKUMAR", date: "30th August" },
+            { name: "Mrs ANITHA A", date: "30th August" },
+            { name: "Mr FREDDY PAUL M", date: "30th August" },
+            { name: "Mr JEYAPAUL I", date: "30th August" },
+            { name: "Mr PRABHU BALACHANDIRAN S", date: "30th August" },
+            { name: "Mrs MATHIVATHANI G", date: "30th August" },
+            { name: "Mrs ABISHA MERCY G", date: "30th August" },
+            { name: "Mr ALWIN RAJ B", date: "30th August" },
+            { name: "Mr JAFIN BRIGHT S", date: "30th August" },
+            { name: "Mr SEKHAR B", date: "30th August" },
+            { name: "Mrs GRACY EVANGELINE D", date: "30th August" },
+            { name: "Ms BLESSITA", date: "30th August" },
+            { name: "Mr BENJAMIN GEORGE DAVID S", date: "30th August" },
+            { name: "Ms JENNIFER MAGDALENE A", date: "30th August" },
+            { name: "Mr ABDIEL SAM THOMAS R", date: "30th August" },
+            { name: "Ms JEFFINA S", date: "30th August" },
+            { name: "Ms JAZLYN TIRZAH", date: "30th August" },
+            { name: "Master JOES JEMSON", date: "30th August" },
+            { name: "Master JOHAN DAVIS", date: "30th August" },
 
-            // ==================== BIRTHDAYS (Aug 31) ====================[cite: 1]
-            { name: "Mr LIVINGSTON BASKER A", date: "31st August" },[cite: 1]
-            { name: "Mr ANANDHA KUMAR D", date: "31st August" },[cite: 1]
-            { name: "Mr THOMAS RAJA P S/O JEYASELVI P", date: "31st August" },[cite: 1]
-            { name: "Mr ABRAHAM PRABHAKAR EDWIN S/O EDWIN M", date: "31st August" },[cite: 1]
-            { name: "Mr JOHN PRASANNA P", date: "31st August" },[cite: 1]
-            { name: "Mr JEYARUBAN D", date: "31st August" },[cite: 1]
-            { name: "Mrs JANE DEVANESAM P D/O PRABAKAR I", date: "31st August" },[cite: 1]
-            { name: "Mrs ABI T ZERITH M D/O MOSES RUX M", date: "31st August" },[cite: 1]
-            { name: "Mr IMMANUEL DHANASINGH S S/O JEYASELI HEMALATHA D", date: "31st August" },[cite: 1]
-            { name: "Ms CHELLY S D/O SELVAKUMAR J", date: "31st August" },[cite: 1]
-            { name: "Mrs ASWATHI S W/O AJITH RAJA S", date: "31st August" },[cite: 1]
-            { name: "Mr DANIEL JACOB S S/O SAMUEL S", date: "31st August" },[cite: 1]
-            { name: "Mr JACOB SOUNDAR SW S/O WINSTON JEBARAJ S", date: "31st August" },[cite: 1]
-            { name: "Ms ELVINA SHARON J D/O JUSTIN S", date: "31st August" },[cite: 1]
-            { name: "Ms JENIFA ABIYA A D/O AUGUSTIN B", date: "31st August" },[cite: 1]
-            { name: "Ms ALICE CHRISTINA A D/O AGASTIN JABARAJ S", date: "31st August" }[cite: 1]
+            // === BIRTHDAYS: AUGUST 31 ===
+            { name: "Mr LIVINGSTON BASKER A", date: "31st August" },
+            { name: "Mr ANANDHA KUMAR D", date: "31st August" },
+            { name: "Mr THOMAS RAJA P", date: "31st August" },
+            { name: "Mr ABRAHAM PRABHAKAR EDWIN", date: "31st August" },
+            { name: "Mr JOHN PRASANNA P", date: "31st August" },
+            { name: "Mr JEYARUBAN D", date: "31st August" },
+            { name: "Mrs JANE DEVANESAM P", date: "31st August" },
+            { name: "Mrs ABI T ZERITH M", date: "31st August" },
+            { name: "Mr IMMANUEL DHANASINGH S", date: "31st August" },
+            { name: "Ms CHELLY S", date: "31st August" },
+            { name: "Mrs ASWATHI S", date: "31st August" },
+            { name: "Mr DANIEL JACOB S", date: "31st August" },
+            { name: "Mr JACOB SOUNDAR SW", date: "31st August" },
+            { name: "Ms ELVINA SHARON J", date: "31st August" },
+            { name: "Ms JENIFA ABIYA A", date: "31st August" },
+            { name: "Ms ALICE CHRISTINA A", date: "31st August" }
         ];
 
         let currentIndex = 0;
