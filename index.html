@@ -1,466 +1,220 @@
 <!DOCTYPE html>
 <html lang="ta">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Church LED Display - Celebration Showcase</title>
-    <style>
-        /* Base configuration derived from your working LED wall template */
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: hidden; 
-            background-color: black; 
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; 
-        }
-        #bg { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background-size: cover; 
-            background-position: center; 
-            transition: background-image 0.8s ease-in-out; 
-        }
-        .overlay { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%); 
-            z-index: 5; 
-        }
-        .container { 
-            position: relative; 
-            z-index: 10; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100%; 
-            padding: 20px; 
-            text-align: center; 
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="1800">
+<title>Church LED Display</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#0b1a24; }
+  body { font-family:'Noto Sans Tamil','Latha','Nirmala UI','Vijaya',Arial,sans-serif; }
 
-        /* Fixed Premium Glassmorphic Container */
-        .ui-card {
-            background: rgba(255, 255, 255, 0.08);
-            -webkit-backdrop-filter: blur(14px);
-            backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 35px 40px;
-            border-radius: 24px;
-            max-width: 90%;
-            width: 580px;
-            box-sizing: border-box;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-        
-        /* Modern Premium Dynamic Heading Badge */
-        #heading-line {
-            display: inline-block;
-            font-size: 40px;
-            color: #ffd700; 
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 28px;
-            background: rgba(255, 215, 0, 0.15);
-            padding: 6px 20px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 215, 0, 0.35);
-        }
+  /* Layer 0: soft moving gradient. Always visible if no video loads. */
+  #fallback { position:absolute; top:0; left:0; width:100%; height:100%;
+    background:linear-gradient(120deg,#12303f,#2a3f63,#47476e,#3c5a6b,#12303f);
+    background-size:300% 300%; -webkit-animation:drift 40s ease-in-out infinite; animation:drift 40s ease-in-out infinite; }
+  @-webkit-keyframes drift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  @keyframes drift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
 
-        /* High-Performance Readable Typography Layers */
-        #names-line { 
-            font-size: 36px; 
-            font-weight: 900; 
-            color: #ffffff;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.7);
-            line-height: 1.4; 
-            margin-bottom: 16px; 
-        }
-        #milestone-line { 
-            font-size: 22px; 
-            color: rgba(255, 255, 255, 0.95);
-            font-weight: 600; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            margin-bottom: 18px;
-        }
-        #date-line {
-            font-size: 25px;
-            color: #ff66fa; 
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        #date-line .day-number {
-            font-size: 42px;
-            font-weight: 900;
-            display: inline-block;
-            margin-right: 4px;
-            color: #ffffff;
-        }
-        
-        .watermark { 
-            position: absolute; 
-            bottom: 20px; 
-            left: 30px; 
-            font-size: 14px; 
-            font-weight: 800; 
-            color: rgba(255, 255, 255, 0.35); 
-            z-index: 20; 
-            letter-spacing: 3px; 
-            text-transform: uppercase;
-        }
-    </style>
+  /* Layer 1: background video, fades in once it is really playing */
+  #bgvideo { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;
+    opacity:0; -webkit-transition:opacity 1.5s ease; transition:opacity 1.5s ease; }
+  #bgvideo.on { opacity:1; }
+
+  /* Layer 2: calm dark veil so text stays readable on any video */
+  #veil { position:absolute; top:0; left:0; width:100%; height:100%;
+    background:linear-gradient(rgba(6,16,26,.42), rgba(6,16,26,.60)); }
+
+  /* Layer 3: text */
+  #frame { position:absolute; top:0; left:0; right:0; bottom:0; padding:5% 7% 8% 7%;
+    display:-webkit-flex; display:flex; -webkit-flex-direction:column; flex-direction:column;
+    -webkit-justify-content:center; justify-content:center; -webkit-align-items:center; align-items:center;
+    text-align:center; box-sizing:border-box; }
+  #content { max-width:100%; -webkit-transition:opacity .9s ease; transition:opacity .9s ease; }
+  #content.out { opacity:0; }
+  #verse { color:#fff8ec; font-weight:700; line-height:1.45; margin:0;
+    text-shadow:0 2px 14px rgba(0,0,0,.65); }
+  #rule { width:56px; height:2px; background:#e9c987; opacity:.8; margin:.55em auto .5em auto; }
+  #ref { color:#f1d596; font-weight:700; letter-spacing:.5px; text-shadow:0 2px 8px rgba(0,0,0,.7); }
+
+  #mark { position:absolute; left:3%; bottom:3%; font-size:11px; letter-spacing:2px; font-weight:700;
+    color:rgba(255,255,255,.35); font-family:Arial,sans-serif; }
+  #dbg { position:absolute; right:6px; top:6px; font:10px Arial,sans-serif; color:#9f9; background:rgba(0,0,0,.6);
+    padding:2px 5px; display:none; }
+</style>
 </head>
 <body>
-    <div id="bg"></div>
-    <div class="overlay"></div>
-    
-    <div class="container">
-        <div class="ui-card">
-            <div id="heading-line"></div>
-            <div id="names-line">Loading...</div>
-            <div id="milestone-line"></div>
-            <div id="date-line"></div>
-        </div>
+  <div id="fallback"></div>
+  <video id="bgvideo" muted loop playsinline preload="auto"></video>
+  <div id="veil"></div>
+  <div id="frame">
+    <div id="content">
+      <div id="verse"></div>
+      <div id="rule"></div>
+      <div id="ref"></div>
     </div>
-    
-    <div class="watermark">MEDIATEAM</div>
+  </div>
+  <div id="mark">MEDIATEAM</div>
+  <div id="dbg"></div>
 
-    <script>
-        const slideDuration = 2000; // 2 seconds per slide
+<script src="verses.js"></script>
+<script>
+/* ============ SETTINGS (edit these) ============ */
+var VERSE_SECONDS = 30;     // how often the verse changes inside the page
+var VIDEO_SECONDS = 150;    // how often the background video changes
 
-        // Background image definitions
-        const bgImages = {
-            wedding: "url('wedding.jpeg')",
-            birthday: "url('birthday.jpeg')"
-        };
+/* Calm background videos. Direct file links only (.mp4 / .webm).
+   - Links that fail are skipped automatically; if all fail, the soft gradient shows.
+   - To use your own videos, drop them in a "videos" folder next to index.html on Netlify
+     and add lines like  "videos/calm1.mp4"  below. (Recommended: 640x384 or 854x480, under 15 MB each.)
+   - If playback is choppy on the processor, change -720.mp4 to -360.mp4.        */
+var VIDEOS = [
+  "https://assets.mixkit.co/videos/34970/34970-720.mp4",  // spectacular sunrise over the clouds
+  "https://assets.mixkit.co/videos/48486/48486-720.mp4",  // dreamy sunrise sky above a lagoon
+  "https://assets.mixkit.co/videos/6851/6851-720.mp4",    // clouds drifting over a tropical beach horizon
+  "https://assets.mixkit.co/videos/46146/46146-720.mp4",  // time lapse of a sky in the desert
+  "https://assets.mixkit.co/videos/34977/34977-720.mp4"   // magical layer of blue clouds
+];
 
-        // DATA REGISTRY ZONE (Updated for September 6th - September 12th)
-        const rawData = [
-            // === BIRTHDAYS: SEPTEMBER 6 ===
-            { name: "Mr SURESH MANUEL", date: "6th September" },
-            { name: "Mrs KAMALAM R", date: "6th September" },
-            { name: "Mr SURESHKUMAR M", date: "6th September" },
-            { name: "Mr ISAAC ARTHER R", date: "6th September" },
-            { name: "Mr ARULRAJ R", date: "6th September" },
-            { name: "Mrs THANGAM A", date: "6th September" },
-            { name: "Mr VINOOH ANDERSON S", date: "6th September" },
-            { name: "Mr ASHOK KUMAR", date: "6th September" },
-            { name: "Mr KERSOME NIRMAL KUMAR A D", date: "6th September" },
-            { name: "Mr ARUL PRAKASH J", date: "6th September" },
-            { name: "Mr ROSHAN SAMUVEL J", date: "6th September" },
-            { name: "Mr RAJKUMAR S", date: "6th September" },
-            { name: "Ms NORA K", date: "6th September" },
-            { name: "Ms JENISHA S", date: "6th September" },
-            { name: "Master NOLAN ANDREW", date: "6th September" },
-            { name: "Ms BERLIN D", date: "6th September" },
+/* ============ VERSES ============ */
+/* The verse list lives in verses.js (loaded above). */
+var ALL = (typeof bibleData !== "undefined" ? bibleData : []);
+var verses = [];
+for (var k = 0; k < ALL.length; k++) { if (ALL[k].v && ALL[k].r) verses.push(ALL[k]); }
+if (!verses.length) verses = [{r:"சங்கீதம் 23:1", v:"கர்த்தர் என் மேய்ப்பராயிருக்கிறார்; நான் தாழ்ச்சியடையேன்."},
+ {r:"எபிரெயர் 6:14", v:"உன்னை ஆசீர்வதிக்கவே ஆசீர்வதித்து, உன்னைப் பெருகவே பெருகப்பண்ணுவேன்."},
+ {r:"மத்தேயு 11:28", v:"வருத்தப்பட்டுப் பாரஞ்சுமக்கிறவர்களே! நீங்கள் எல்லாரும் என்னிடத்தில் வாருங்கள்; நான் உங்களுக்கு இளைப்பாறுதல் தருவேன்."},
+ {r:"லூக்கா 1:37", v:"தேவனாலே கூடாத காரியம் ஒன்றுமில்லை."},
+ {r:"எபிரெயர் 13:5", v:"நான் உன்னைக் கைவிடுவதில்லை, உன்னை விட்டு விலகுவதுமில்லை."},
+ {r:"ஏசாயா 40:31", v:"கர்த்தருக்குக் காத்திருக்கிறவர்களோ புதுப்பெலன் அடைவார்கள்."},
+ {r:"நீதிமொழிகள் 3:6", v:"உன் வழிகளிலெல்லாம் அவரை நினைத்துக்கொள், அப்பொழுது அவர் உன் பாதைகளைச் செவ்வைப்படுத்துவார்."},
+ {r:"மத்தேயு 28:20", v:"இதோ, உலகத்தின் முடிவுபரியந்தம் சகல நாட்களிலும் நான் உங்களுடனேகூட இருக்கிறேன்."},
+ {r:"சங்கீதம் 46:1", v:"தேவன் நமக்கு அடைக்கலமும் பெலனும், ஆபத்துக்காலத்தில் அநுகூலமான துணையுமானவர்."},
+ {r:"ஏசாயா 60:19", v:"கர்த்தர் உனக்கு வெளிச்சமாயிருப்பார், உன் தேவன் உனக்கு மகிமையாயிருப்பார்."},
+ {r:"சங்கீதம் 55:22", v:"உன் பாரத்தைக் கர்த்தர்மேல் வைத்துவிடு, அவர் உன்னை ஆதரிப்பார்."},
+ {r:"பிலிப்பியர் 4:13", v:"என்னைப் பெலப்படுத்துகிற கிறிஸ்துவினாலே எல்லாவற்றையும் செய்ய எனக்குப் பெலனுண்டு."},
+ {r:"சங்கீதம் 118:6", v:"கர்த்தர் என் பட்சத்தில் இருக்கிறார், நான் பயப்படேன்; மனுஷன் எனக்கு என்ன செய்வான்?"},
+ {r:"யாத்திராகமம் 15:11", v:"கர்த்தாவே, தேவர்களில் உமக்கு ஒப்பானவர் யார்? நீர் மகத்துவமுள்ளவர்."},
+ {r:"எபிரெயர் 13:8", v:"இயேசு கிறிஸ்து நேற்றும் இன்றும் என்றென்றும் மாறாதவராயிருக்கிறார்."},
+ {r:"ஏசாயா 41:10", v:"பயப்படாதே, நான் உன்னுடனே இருக்கிறேன்; திகையாதே, நான் உன் தேவன்."},
+ {r:"1 யோவான் 4:8", v:"தேவன் அன்பாகவே இருக்கிறார்."},
+ {r:"சங்கீதம் 23:6", v:"நன்மையும் கிருபையும் என் ஆயுளுள்ள நாளெல்லாம் என்னைத் தொடரும்."},
+ {r:"2 தீமோத்தேயு 1:7", v:"தேவன் நமக்கு பயமுள்ள ஆவியைக் கொடாமல், பலமும் அன்பும் தெளிந்த புத்தியுமுள்ள ஆவியையே கொடுத்திருக்கிறார்."},
+ {r:"சங்கீதம் 103:2", v:"என் ஆத்துமாவே, கர்த்தரை ஸ்தோத்திரி; அவர் செய்த சகல உபகாரங்களையும் மறவாதே."},
+ {r:"மாற்கு 9:23", v:"விசுவாசிக்கிறவனுக்கு எல்லாம் கூடும்."},
+ {r:"பிலிப்பியர் 4:6", v:"நீங்கள் ஒன்றுக்கும் கவலைப்படாமல், எல்லாவற்றையுங்குறித்து உங்கள் விண்ணப்பங்களை ஸ்தோத்திரத்துடனேகூடிய ஜெபத்தினாலும் வேண்டுதலினாலும் தேவனுக்குத் தெரியப்படுத்துங்கள்."},
+ {r:"பிலிப்பியர் 4:4", v:"கர்த்தருக்குள் எப்போதும் சந்தோஷமாயிருங்கள்; சந்தோஷமாயிருங்கள் என்று மறுபடியும் சொல்லுகிறேன்."},
+ {r:"ரோமர் 8:28", v:"தேவனிடத்தில் அன்புகூருகிறவர்களுக்குச் சகலமும் நன்மைக்கு ஏதுவாக நடக்கிறதென்று அறிந்திருக்கிறோம்."},
+ {r:"சங்கீதம் 119:105", v:"உம்முடைய வசனம் என் கால்களுக்குத் தீபமும், என் பாதைக்கு வெளிச்சமுமாய் இருக்கிறது."},
+ {r:"சங்கீதம் 102:16", v:"சீயோனைக் கட்டுகிற கர்த்தர் தமது மகிமையில் வெளிப்படுவார்."},
+ {r:"1 பேதுரு 5:7", v:"அவர் உங்களை விசாரிக்கிறவரானதால், உங்கள் கவலைகளையெல்லாம் அவர்மேல் வைத்துவிடுங்கள்."},
+ {r:"சங்கீதம் 34:19", v:"நீதிமானுக்கு வரும் துன்பங்கள் பலவாயிருக்கும், கர்த்தர் அவையெல்லாவற்றினின்றும் அவனை விடுவிப்பார்."},
+ {r:"எண்ணாகமம் 6:24", v:"கர்த்தர் உன்னை ஆசீர்வதித்து, உன்னைக் காக்கக்கடவர்."},
+ {r:"மத்தேயு 7:7", v:"கேளுங்கள், அப்பொழுது உங்களுக்குக் கொடுக்கப்படும்; தேடுங்கள், அப்பொழுது கண்டடைவீர்கள்."},
+ {r:"யோவான் 14:14", v:"என் நாமத்தினால் நீங்கள் எதைக் கேட்பீர்களோ அதை நான் செய்வேன்."},
+ {r:"லூக்கா 5:31-32", v:"ஆரோக்கியமுள்ளவர்களுக்கு அல்ல, பிணியாளிகளுக்கே வைத்தியன் தேவை; நீதிமான்களையல்ல, பாவிகளையே மனந்திரும்புகிறதற்கு அழைக்க வந்தேன்."},
+ {r:"மத்தேயு 6:33", v:"முதலாவது தேவனுடைய ராஜ்யத்தையும் அவருடைய நீதியையும் தேடுங்கள்; அப்பொழுது இவைகளெல்லாம் உங்களுக்குக் கூடக் கொடுக்கப்படும்."},
+ {r:"மத்தேயு 4:4", v:"மனுஷன் அப்பத்தினாலே மாத்திரமல்ல, தேவனுடைய வாயிலிருந்து புறப்படுகிற ஒவ்வொரு வார்த்தையினாலும் பிழைப்பான்."},
+ {r:"யாத்திராகமம் 14:14", v:"கர்த்தர் உங்களுக்காக யுத்தம் பண்ணுவார், நீங்கள் சும்மாயிருப்பீர்கள்."},
+ {r:"சங்கீதம் 27:1", v:"கர்த்தர் என் வெளிச்சமும் என் இரட்சிப்புமானவர், யாருக்குப் பயப்படுவேன்?"},
+ {r:"செப்பனியா 3:17", v:"உன் தேவனாகிய கர்த்தர் உன்னோடு இருக்கிறார்; அவர் வல்லமையுள்ளவர், அவர் உன்னை இரட்சிப்பார்."},
+ {r:"யோசுவா 1:9", v:"நான் உனக்குக் கட்டளையிடவில்லையா? திடமனதாயிரு, பலங்கொள், திகையாதே, கலங்காதே."},
+ {r:"நாகூம் 1:7", v:"கர்த்தர் நல்லவர், ஆபத்துநாளில் அரணான கோட்டை; தம்மை நம்புகிறவர்களை அவர் அறிந்திருக்கிறார்."},
+ {r:"ஆதியாகமம் 28:15", v:"இதோ, நான் உனக்குக் கொடுத்த வாக்குத்தத்தத்தை நிறைவேற்றுமளவும் உன்னைக் கைவிடுவதில்லை."},
+ {r:"யோவான் 14:1", v:"உங்கள் இருதயம் கலங்காதிருப்பதாக; தேவனிடத்தில் விசுவாசமாயிருங்கள், என்னிடத்திலும் விசுவாசமாயிருங்கள்."},
+ {r:"சங்கீதம் 147:3", v:"அவர் உடைந்த இருதயமுள்ளவர்களைக் குணமாக்குகிறார், அவர்களுடைய காயங்களைக் கட்டுகிறார்."},
+ {r:"யாக்கோபு 5:16", v:"நீதிமான்களுடைய ஜெபம் தேவனுக்குப் பிரியம், அது மிகுந்த பலனுள்ளது."},
+ {r:"சங்கீதம் 16:11", v:"உம்முடைய பிரசன்னம் எனக்கு ஜீவவழியைக் காட்டும்; உம்முடைய வலதுபாரிசத்தில் நித்திய பேரின்பம் உண்டு."},
+ {r:"1 தெசலோனிக்கேயர் 5:23", v:"சமாதானத்தின் தேவன் தாமே உங்களை முற்றிலும் பரிசுத்தமாக்குவாராக."},
+ {r:"சங்கீதம் 42:5", v:"என் ஆத்துமாவே, நீ ஏன் கலங்குகிறாய்? தேவனை நோக்கிக் காத்திரு; இன்னும் அவரைத் துதிப்பேன்."},
+ {r:"எபிரெயர் 12:29", v:"நம்முடைய தேவன் பட்சிக்கிற அக்கினியாயிருக்கிறார்."},
+ {r:"சங்கீதம் 145:3", v:"கர்த்தர் பெரியவர், அவர் மிகவும் துதிக்கப்படத்தக்கவர்; அவருடைய மகத்துவம் ஆராய்ந்து முடியாதது."},
+ {r:"சங்கீதம் 37:5", v:"கர்த்தர் மேல் உன் வழியை ஒப்புவித்து, அவரை நம்பியிரு; அவரே காரியத்தை வாய்க்கப்பண்ணுவார்."},];
 
-            // === BIRTHDAYS: SEPTEMBER 7 ===
-            { name: "Mrs MANI Y", date: "7th September" },
-            { name: "Mr CHANDRADHAS V", date: "7th September" },
-            { name: "Mrs RANI NAVARAJ", date: "7th September" },
-            { name: "Mr SUNDARRAJ A", date: "7th September" },
-            { name: "Mr EBENEZER JAYAKUMAR D", date: "7th September" },
-            { name: "Mr ISAAC ARPUTHARAJ P", date: "7th September" },
-            { name: "Mrs FLORA CATHERIN RANI J", date: "7th September" },
-            { name: "Mrs KIRUBAIRANI J", date: "7th September" },
-            { name: "Mr BENJAMIN ROBERT S", date: "7th September" },
-            { name: "Mrs BRIGTHY KIRUBHA", date: "7th September" },
-            { name: "Mr DAVID E", date: "7th September" },
-            { name: "Mrs SUMILA ANBUMANI A", date: "7th September" },
-            { name: "Mr WILLIAM CHELLADURAI", date: "7th September" },
-            { name: "Mr JEYSON CHRISTOPHER B", date: "7th September" },
-            { name: "Mrs SOFIYA M", date: "7th September" },
-            { name: "Mr SAMUVEL LIVINGSTONE A", date: "7th September" },
-            { name: "Ms MERLIN VINCENT", date: "7th September" },
-            { name: "Mr BENSON", date: "7th September" },
-            { name: "Ms JANNI GIANNA S", date: "7th September" },
-            { name: "Master JASON JERAL", date: "7th September" },
-            { name: "Master ADRIAN JOVAN CHRISTOPHER", date: "7th September" },
+/* ============ CODE (no need to edit below) ============ */
+function $(id){ return document.getElementById(id); }
+function query(name){
+  var m = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+function shuffle(a){
+  a = a.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+var debug = query('debug') !== null;
+if (debug) $('dbg').style.display = 'block';
+function log(t){ if (debug) $('dbg').innerHTML = t; }
 
-            // === BIRTHDAYS: SEPTEMBER 8 ===
-            { name: "Mr SUNDARAPANDIAN J K V", date: "8th September" },
-            { name: "Mrs MARIAMMAL M", date: "8th September" },
-            { name: "Mrs SUMATHY VEDAMUTHU J", date: "8th September" },
-            { name: "Mr WILSON JAYAWARTHANA P", date: "8th September" },
-            { name: "Mrs JEMIMAH WINSTON", date: "8th September" },
-            { name: "Mrs STELLA T", date: "8th September" },
-            { name: "Mrs SHIRLEY DIVYA N", date: "8th September" },
-            { name: "Mr MELVIN JACOB J", date: "8th September" },
-            { name: "Mrs SAVINA STEPHEN", date: "8th September" },
-            { name: "Mrs LYSIA P", date: "8th September" },
-            { name: "Mrs JAYA ANGEL J", date: "8th September" },
-            { name: "Mrs JENITHA R", date: "8th September" },
-            { name: "Mrs SHEKINA SHINYA RANI A", date: "8th September" },
-            { name: "Ms CATHERIAN KEZIAH", date: "8th September" },
-            { name: "Mr SAM JOEL", date: "8th September" },
-            { name: "Ms ERIN CASEY", date: "8th September" },
-            { name: "Ms SANKARESWARI S", date: "8th September" },
-            { name: "Ms JASILA S", date: "8th September" },
+/* ---- verses: shuffled deck, no repeats until all shown ---- */
+var deck = [], vi = 0;
+function nextVerse(){
+  if (vi >= deck.length) { deck = shuffle(verses); vi = 0; }
+  return deck[vi++];
+}
 
-            // === BIRTHDAYS: SEPTEMBER 9 ===
-            { name: "Mr CHRISTOPHER P N", date: "9th September" },
-            { name: "Mr VETHAMANI NADAR T", date: "9th September" },
-            { name: "Mrs NIRMALA S", date: "9th September" },
-            { name: "Mrs SUGANTHI JAYARAJ", date: "9th September" },
-            { name: "Mr AARON D", date: "9th September" },
-            { name: "Mrs RANJITHABAI J", date: "9th September" },
-            { name: "Mrs LIZA PHYLLIDA A", date: "9th September" },
-            { name: "Mr JUDHA RAJA SINGH E", date: "9th September" },
-            { name: "Mrs PONRANI K", date: "9th September" },
-            { name: "Mr JOHN BENNY E", date: "9th September" },
-            { name: "Mrs ESTHER S", date: "9th September" },
-            { name: "Mr JENIFER JOSEPH C", date: "9th September" },
-            { name: "Mrs SAKILA VIJILA K", date: "9th September" },
-            { name: "Mrs DIANA A", date: "9th September" },
-            { name: "Ms DELSHA STANLEY", date: "9th September" },
-            { name: "Ms BLESSY ADLIN S", date: "9th September" },
-            { name: "Ms AISHLIN MAYA", date: "9th September" },
-            { name: "Ms EVELYN APPAHIA E A", date: "9th September" },
-            { name: "Master JOBIN JONES A", date: "9th September" },
-            { name: "Ms CAROLYN NICOLETTE J", date: "9th September" },
-            { name: "Ms CATHRYN NINETTE", date: "9th September" },
-            { name: "Master DANIEL F", date: "9th September" },
+/* ---- auto-fit: the verse always fits the screen, whatever its length ---- */
+function fit(){
+  var H = window.innerHeight || 384;
+  var frame = $('frame'), content = $('content'), verse = $('verse'), ref = $('ref');
+  var avail = H * 0.84;
+  var size = Math.round(H * 0.125);          // start large (about 48px on a 384px-high area)
+  var min = Math.round(H * 0.05);
+  while (size >= min) {
+    verse.style.fontSize = size + 'px';
+    ref.style.fontSize = Math.round(size * 0.62) + 'px';
+    if (content.offsetHeight <= avail) break;
+    size -= 2;
+  }
+}
+function showVerse(first){
+  var c = $('content'), n = nextVerse();
+  var apply = function(){
+    $('verse').innerHTML = n.v;
+    $('ref').innerHTML = n.r;
+    fit();
+    c.className = '';
+  };
+  if (first) { apply(); return; }
+  c.className = 'out';
+  setTimeout(apply, 950);
+}
 
-            // === BIRTHDAYS: SEPTEMBER 10 ===
-            { name: "Mrs EBENESAR SUSEELA PANDIAN", date: "10th September" },
-            { name: "Mr JAYABAL D", date: "10th September" },
-            { name: "Mrs HELEN SUDHAN APPADURAI", date: "10th September" },
-            { name: "Mr KOYILRAJ S", date: "10th September" },
-            { name: "Mr JOHN MANICKAM K", date: "10th September" },
-            { name: "Mrs VASANTHY J C", date: "10th September" },
-            { name: "Mrs PACKIATHAI J", date: "10th September" },
-            { name: "Mrs JULIET VIJAYA", date: "10th September" },
-            { name: "Mrs KASTHURI JEYAKUMAR", date: "10th September" },
-            { name: "Mr RUBEN EBENRAJ R", date: "10th September" },
-            { name: "Mr PRABAKARAN I", date: "10th September" },
-            { name: "Mr RAJAN C", date: "10th September" },
-            { name: "Mrs ANITHA SELVAVATHI", date: "10th September" },
-            { name: "Mrs SUJATHA S", date: "10th September" },
-            { name: "Mr BABU V", date: "10th September" },
-            { name: "Ms CHRISTOPHER R", date: "10th September" },
-            { name: "Mr EPHRAIM T", date: "10th September" },
-            { name: "Mrs IRENE SARAH N", date: "10th September" },
-            { name: "Ms VINITHA", date: "10th September" },
-            { name: "Ms AGNES B", date: "10th September" },
-            { name: "Mr JENITH SAMUEL J", date: "10th September" },
-            { name: "Ms CELSIYA L", date: "10th September" },
-            { name: "Mr ALLWIN PETER S", date: "10th September" },
-            { name: "Ms CELINA NANCY M", date: "10th September" },
-            { name: "Ms MIRACLINE SELCIYA", date: "10th September" },
-            { name: "Mr ISSAC DANIEL J", date: "10th September" },
-            { name: "Mr ANDREW CHRISTO", date: "10th September" },
-            { name: "Master SHERVIN SELVA", date: "10th September" },
-            { name: "Master MICHELLE", date: "10th September" },
+/* ---- background video: skip bad links, never leave a black screen ---- */
+var vid = $('bgvideo'), order = [], vp = 0, failCount = 0, watchdog = null;
+function loadVideo(){
+  if (!VIDEOS.length) return;
+  if (failCount >= VIDEOS.length) { vid.className = ''; log('all videos failed - gradient only'); return; }
+  if (vp >= order.length) { order = shuffle(VIDEOS); vp = 0; }
+  var src = order[vp++];
+  vid.className = '';
+  clearTimeout(watchdog);
+  vid.muted = true;
+  vid.src = src;
+  vid.load();
+  var p = vid.play();
+  if (p && p['catch']) p['catch'](function(){});
+  log('loading: ' + src);
+  watchdog = setTimeout(function(){ failCount++; loadVideo(); }, 12000);  // 12 s without playing = skip
+}
+vid.addEventListener('playing', function(){
+  clearTimeout(watchdog); failCount = 0; vid.className = 'on'; log('playing: ' + vid.src);
+});
+vid.addEventListener('error', function(){ clearTimeout(watchdog); failCount++; loadVideo(); });
 
-            // === BIRTHDAYS: SEPTEMBER 11 ===
-            { name: "Mrs SELVI EBENEZAR K", date: "11th September" },
-            { name: "Mr SELVARAJ T", date: "11th September" },
-            { name: "Mr ARNALD RUBEN M", date: "11th September" },
-            { name: "Mr SELVAN SAMUEL C", date: "11th September" },
-            { name: "Mrs ELIZABETH P", date: "11th September" },
-            { name: "Mrs DEBORAH SHARON", date: "11th September" },
-            { name: "Mrs JAYANTHI", date: "11th September" },
-            { name: "Mrs MONITA SHARON A", date: "11th September" },
-            { name: "Mr ROBERT PANDIAN J", date: "11th September" },
-            { name: "Mr FRANKLIN DANI R", date: "11th September" },
-            { name: "Ms SOBANA PAPY I", date: "11th September" },
-            { name: "Mr RUBEN JACOB", date: "11th September" },
-            { name: "Ms HANITA EDWINA B", date: "11th September" },
-            { name: "Master THEODORE SELVAN", date: "11th September" },
-            { name: "Master THEODORE RYLAN A", date: "11th September" },
-
-            // === BIRTHDAYS: SEPTEMBER 12 ===
-            { name: "Mrs DEVI SARGUNAR", date: "12th September" },
-            { name: "Mr DURAI", date: "12th September" },
-            { name: "Mrs RAMOLA JACOB", date: "12th September" },
-            { name: "Mr JEBARAJ DAVID", date: "12th September" },
-            { name: "Mr SUNDER G", date: "12th September" },
-            { name: "Mrs JAYANTHI G", date: "12th September" },
-            { name: "Mr JOSHUA SAMSON", date: "12th September" },
-            { name: "Mrs LATHA JULIET P", date: "12th September" },
-            { name: "Mrs VANAJA J", date: "12th September" },
-            { name: "Mrs VIJILA JEBAMALAR T", date: "12th September" },
-            { name: "Mrs RANI P", date: "12th September" },
-            { name: "Mrs UMA S", date: "12th September" },
-            { name: "Mrs HELEENA J", date: "12th September" },
-            { name: "Mr JEBASTINE ANGEL J", date: "12th September" },
-            { name: "Mrs SANGEETHA K", date: "12th September" },
-            { name: "Mr AUGUSTIN J", date: "12th September" },
-            { name: "Mr SAMUEL P", date: "12th September" },
-            { name: "Mr JENIX G", date: "12th September" },
-            { name: "Mrs JULIET REETA D", date: "12th September" },
-            { name: "Mrs GENESIS MARIN GOLD PUSHPAM D", date: "12th September" },
-            { name: "Mr THOMAS WILSON RAJ K", date: "12th September" },
-            { name: "Ms JAYA SELIN PRAVEENA J", date: "12th September" },
-            { name: "Ms MERLIN A", date: "12th September" },
-            { name: "Mr ALLEN C S TONY", date: "12th September" },
-            { name: "Master NAETHAN LINZO", date: "12th September" },
-
-            // === WEDDINGS: SEPTEMBER 6 ===
-            { husband: "Mr STEPHEN SELVARAJ M", wife: "Mrs RAJUBAI STEPHEN", date: "6th September", year: "1976" },
-            { husband: "Mr DHANASINGH I", wife: "Mrs BEULA DHANASINGH D", date: "6th September", year: "1982" },
-            { husband: "Mr JEYARAJ P", wife: "Mrs PONSEELI J", date: "6th September", year: "1982" },
-            { husband: "Mr IMMANUEL P", wife: "Mrs REETA PONRANI", date: "6th September", year: "1983" },
-            { husband: "Mr SWAMIDHASON S", wife: "Mrs REMILA ROSLIND Y", date: "6th September", year: "1990" },
-            { husband: "Mr EDWIN G", wife: "Mrs GOODLUCK USHA E", date: "6th September", year: "1995" },
-            { husband: "Mr JAYA ANANDA KUMAR P", wife: "Mrs SUMATHY T", date: "6th September", year: "1997" },
-            { husband: "Mr ARUL RAJ N", wife: "Mrs GNANASELVI A", date: "6th September", year: "2001" },
-            { husband: "Mr JAYAKUMAR C", wife: "Mrs SHEEBA JAYAKUMAR", date: "6th September", year: "2005" },
-            { husband: "Rev ABRAHAM M", wife: "Mrs ANANDHI G", date: "6th September", year: "2018" },
-
-            // === WEDDINGS: SEPTEMBER 7 ===
-            { husband: "Mr STEPHEN RAGUPATHY M", wife: "Mrs JHANSI RANI", date: "7th September", year: "1987" },
-            { husband: "Mr ENITHAR E", wife: "Mrs MELBA E", date: "7th September", year: "1989" },
-            { husband: "Mr GILBERT RAJAN J", wife: "Mrs RHEETA MARJERY S", date: "7th September", year: "1989" },
-            { husband: "Mr ARUNKUMAR J", wife: "Mrs SELVEENA", date: "7th September", year: "2005" },
-            { husband: "Mr JEBASTEEN J", wife: "Mrs JAYANTHI A", date: "7th September", year: "2005" },
-            { husband: "Mr PETER RAVINDRAKUMAR D", wife: "Mrs DEEPALAKSHMI", date: "7th September", year: "2005" },
-            { husband: "Mr DAVID JOB HOSEA", wife: "Mrs SHEEBA EBENZ DAVID T", date: "7th September", year: "2009" },
-            { husband: "Mr PRINCETON JOSEPH RAJA B", wife: "Mrs KAROLINE S", date: "7th September", year: "2022" },
-
-            // === WEDDINGS: SEPTEMBER 8 ===
-            { husband: "Mr EBENEZER GANDHI D", wife: "Mrs JANSI RANI CHRISTILDA G", date: "8th September", year: "1986" },
-            { husband: "Mr JEGAN SELVAKUMAR R", wife: "Mrs LEGIN SHANTHI J", date: "8th September", year: "2003" },
-            { husband: "Mr MATHESON DEVASEKARAN S", wife: "Mrs JOYCE J", date: "8th September", year: "2006" },
-            { husband: "Mr BABU V", wife: "Mrs HELENCY M", date: "8th September", year: "2017" },
-            { husband: "Mr KINGSLY MOSES K", wife: "Mrs GOWRI", date: "8th September", year: "2021" },
-            { husband: "Mr PRASANTH SAM ASIR P", wife: "Mrs GIFTLIN GLADYS R", date: "8th September", year: "2021" },
-            { husband: "Mr SAMUEL P", wife: "Ms SANKARESWARI S", date: "8th September", year: "2021" },
-            { husband: "Mr JAMES RAVIRAJ WILLIAM", wife: "Mrs SWEETLIN S", date: "8th September", year: "2022" },
-
-            // === WEDDINGS: SEPTEMBER 9 ===
-            { husband: "Mr DURAI S R", wife: "Mrs GUNASEELI D", date: "9th September", year: "1968" },
-            { husband: "Mr ASARIAH JAISINGH P", wife: "Mrs ROSELIN JAISINGH", date: "9th September", year: "1983" },
-            { husband: "Mr WILFRED JEBARAJ T", wife: "Mrs PRISCILLA SUNDARY T", date: "9th September", year: "1987" },
-            { husband: "Mr RAJKUMAR E", wife: "Mrs JESINTHA MARY A", date: "9th September", year: "1991" },
-            { husband: "Mr RAVI KUMAR K", wife: "Mrs PRESCILLA SELVARANI J", date: "9th September", year: "1996" },
-            { husband: "Mr MANOHAR IMMANUEL J", wife: "Mrs VINIBA JEYANTHI ROSLIN", date: "9th September", year: "1998" },
-            { husband: "Mr JOSEPH DHANARAJ D", wife: "Mrs SHEEBA GRACE", date: "9th September", year: "2002" },
-            { husband: "Mr REUBAN GNANASIGAMANI T", wife: "Mrs BERCY VIJAYASEELI", date: "9th September", year: "2010" },
-            { husband: "Mr MOSES ARUL PRABHU J", wife: "Mrs ISABELLA", date: "9th September", year: "2013" },
-            { husband: "Mr CHARLES GODWIN P", wife: "Mrs JOSELIN ZIBLA J", date: "9th September", year: "2019" },
-            { husband: "Mr ARUL ABRAHAM G", wife: "Mrs JEBA B", date: "9th September", year: "2021" },
-            { husband: "Mr BAKTHASINGH R", wife: "Mrs ANGEL GNANASELVI A", date: "9th September", year: "2021" },
-            { husband: "Mr IMMANUEL M", wife: "Mrs MERCY ANNAL A", date: "9th September", year: "2021" },
-            { husband: "Mr JOSEPH P", wife: "Mrs ANUSHA BLESSY P", date: "9th September", year: "2021" },
-            { husband: "Mr PRATAB JEBAKUMR J", wife: "Mrs SUBHA ANANTHI S", date: "9th September", year: "2021" },
-            { husband: "Mr VIMALSON CHRISTOPHER J", wife: "Mrs EVANGALIN JEMIMA J", date: "9th September", year: "2021" },
-
-            // === WEDDINGS: SEPTEMBER 10 ===
-            { husband: "Mr GABRIEL A", wife: "Mrs SARAL G", date: "10th September", year: "1979" },
-            { husband: "Mr DHARMACKAN S", wife: "Mrs PREMA DHARMACKAN", date: "10th September", year: "1981" },
-            { husband: "Mr THEMANIS RATHNASEKAR PAULPANDIAN", wife: "Mrs VINMATHY THAMAYANTHI THEMAINS", date: "10th September", year: "1984" },
-            { husband: "Mr ROOPSINGH G", wife: "Mrs SELVAMANI R", date: "10th September", year: "1990" },
-            { husband: "Mr TENSING D", wife: "Mrs ROSELIN TENSING", date: "10th September", year: "1990" },
-            { husband: "Mr JOSHVA BASKAR T", wife: "Mrs EBENEZER VASANTHI J", date: "10th September", year: "1992" },
-            { husband: "Mr ISAAC JAYAKUMAR P", wife: "Mrs RAJESWARI S", date: "10th September", year: "1999" },
-            { husband: "Mr ISSAC R", wife: "Mrs PREETHA ISAAC", date: "10th September", year: "2004" },
-
-            // === WEDDINGS: SEPTEMBER 11 ===
-            { husband: "Mr DANIEL CHANDRA DHAS", wife: "Mrs VIMALA CHANDRADHAS", date: "11th September", year: "1975" },
-            { husband: "Mr MOHAN DHAS T", wife: "Mrs HEPSY BELL MOHAN", date: "11th September", year: "1978" },
-            { husband: "Mr VETHAMANI NADAR T", wife: "Mrs ROOTH KALAVATHI", date: "11th September", year: "1981" },
-            { husband: "Mr GNANARAJ P", wife: "Mrs SELLATHAY G", date: "11th September", year: "1985" },
-            { husband: "Mr KANNIAN J", wife: "Mrs PREMA K", date: "11th September", year: "1985" },
-            { husband: "Mr ROBERT JOHN", wife: "Mrs SELVAMARY P", date: "11th September", year: "1987" },
-            { husband: "Mr JEBASINGH J", wife: "Mrs BARZILAL JEBASINGH", date: "11th September", year: "1989" },
-            { husband: "Mr JAMES SELVAKUMAR J", wife: "Mrs JEBA SELVI", date: "11th September", year: "1991" },
-            { husband: "Mr KUMAR J S", wife: "Mrs SELVI M", date: "11th September", year: "1992" },
-            { husband: "Mr BASKAR T", wife: "Mrs JABASILI B", date: "11th September", year: "2000" },
-            { husband: "Mr GAVASKAR D", wife: "Mrs JEBAKUMARI G", date: "11th September", year: "2000" },
-            { husband: "Mr JAYARAJ A", wife: "Mrs CHITHIRAI SELVI J", date: "11th September", year: "2000" },
-            { husband: "Mr THINAKARAN JOHNSON P", wife: "Mrs VIAYA T", date: "11th September", year: "2008" },
-            { husband: "Mr THANGARAJ", wife: "Mrs UMADEVI G", date: "11th September", year: "2019" },
-            { husband: "Mr SELIN JERALD", wife: "Mrs SELVA PRAVEENA P", date: "11th September", year: "2023" },
-            { husband: "Mr SIMON RAJ JEBAKUMAR A", wife: "Mrs ANGEL ISHWARYA I", date: "11th September", year: "2023" },
-            { husband: "Mr STANLEY D", wife: "Mrs KEERTHANA", date: "11th September", year: "2025" },
-
-            // === WEDDINGS: SEPTEMBER 12 ===
-            { husband: "Mr RATHINARAJ N", wife: "Mrs JEBAKANI R", date: "12th September", year: "1983" },
-            { husband: "Mr STEPHEN ARUL J", wife: "Mrs KALPANA T", date: "12th September", year: "1986" },
-            { husband: "Mr VIJAY ANAND PETER", wife: "Mrs MERCY PETER", date: "12th September", year: "1986" },
-            { husband: "Mr SAMUEL ESA T", wife: "Mrs LILLY RANI S", date: "12th September", year: "1991" },
-            { husband: "Mr JEBASING P", wife: "Mrs JASMINE J", date: "12th September", year: "2001" },
-            { husband: "Mr STEPHEN RAJ M @ SUBIRAMANIAN", wife: "Mrs SUMATHI S", date: "12th September", year: "2001" },
-            { husband: "Mr MEGALAN DAVID J", wife: "Mrs JENIETTA MAGDALIN J", date: "12th September", year: "2013" },
-            { husband: "Mr JUSTUS BASIL S", wife: "Mrs CHRISTINA LEELA PRISCILLA P", date: "12th September", year: "2016" },
-            { husband: "Mr FINNY BELWIN A", wife: "Mrs JUSTILIN J R", date: "12th September", year: "2018" },
-            { husband: "Mr JOHN SURESH", wife: "Mrs ANITHA MARY S", date: "12th September", year: "2018" },
-            { husband: "Mr PRADEEP KUMAR", wife: "Mrs ALOSHNI KRUBA PRISCILLA", date: "12th September", year: "2018" },
-            { husband: "Mr CHARLES S", wife: "Mrs BALA SUDHA", date: "12th September", year: "2019" },
-            { husband: "Mr AMOSE JEBASTEEN", wife: "Mrs SELVI R", date: "12th September", year: "2022" },
-            { husband: "Mr JACOB JOHNSON K", wife: "Mrs SELIN JEBANESI K", date: "12th September", year: "2022" }
-        ];
-
-        let currentIndex = 0;
-
-        function formatDateBig(dateStr, label) {
-            if (!dateStr) return "";
-            const match = dateStr.match(/^(\d+)(.*)$/);
-            if (match) {
-                return `${label}: <span class="day-number">${match[1]}</span>${match[2]}`;
-            }
-            return `${label}: ${dateStr}`;
-        }
-
-        function refreshContent() {
-            try {
-                if (!rawData || rawData.length === 0) return;
-                
-                const item = rawData[currentIndex];
-                const currentYear = new Date().getFullYear();
-                
-                let headingText = "";
-                let names = "";
-                let milestoneText = "";
-                let dateHTML = "";
-
-                if (item.husband && item.wife) {
-                    let hName = item.husband.replace(/^(Mr|Mrs|Ms|Rev)\.?\s+/i, '');
-                    let wName = item.wife.replace(/^(Mr|Mrs|Ms|Rev)\.?\s+/i, '');
-                    
-                    let parsedYear = parseInt(item.year);
-                    if (isNaN(parsedYear)) parsedYear = currentYear;
-                    const milestone = currentYear - parsedYear;
-
-                    headingText = "Wedding Wish";
-                    names = `Mr. ${hName}<br>& Mrs. ${wName}`;
-                    milestoneText = `Celebrating ${milestone} Years of Marriage`;
-                    dateHTML = formatDateBig(item.date, "Wedding Day");
-                    document.getElementById('bg').style.backgroundImage = bgImages.wedding;
-                } 
-                else if (item.name) {
-                    headingText = "Birthday Wish";
-                    names = item.name;
-                    milestoneText = "Celebrating Joyful Birthday";
-                    dateHTML = formatDateBig(item.date, "Birthday");
-                    document.getElementById('bg').style.backgroundImage = bgImages.birthday;
-                }
-
-                document.getElementById('heading-line').innerText = headingText;
-                document.getElementById('names-line').innerHTML = names;
-                document.getElementById('milestone-line').innerText = milestoneText;
-                document.getElementById('date-line').innerHTML = dateHTML;
-
-            } catch (error) {
-                console.error("Error at index: " + currentIndex, error);
-            } finally {
-                currentIndex = (currentIndex + 1) % rawData.length;
-            }
-        }
-
-        refreshContent();
-        setInterval(refreshContent, slideDuration);
-    </script>
+/* ---- start ---- */
+deck = shuffle(verses);
+var forced = query('v');                       // optional: index.html?v=3 shows verse number 3
+if (forced !== null && verses[parseInt(forced, 10)]) { deck.unshift(verses[parseInt(forced, 10)]); }
+showVerse(true);
+loadVideo();
+setInterval(function(){ showVerse(false); }, VERSE_SECONDS * 1000);
+setInterval(function(){ loadVideo(); }, VIDEO_SECONDS * 1000);
+window.onresize = fit;
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fit); }  // refit when Tamil font arrives
+</script>
 </body>
 </html>
